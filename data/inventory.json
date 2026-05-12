@@ -1,0 +1,2365 @@
+[
+  {
+    "id": "top-001",
+    "name": "Slim Oxford Button-Down",
+    "category": "top",
+    "retailer": "Uniqlo",
+    "price": 39.9,
+    "imageUrl": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "white",
+    "colorFamily": "white",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "minimalist",
+      "preppy"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Slim%20Oxford%20Button-Down",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-002",
+    "name": "Linen Relaxed Shirt",
+    "category": "top",
+    "retailer": "Zara",
+    "price": 45.9,
+    "imageUrl": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "sand",
+    "colorFamily": "earth",
+    "styleTags": [
+      "coastal",
+      "minimalist",
+      "casual",
+      "boho"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Linen%20Relaxed%20Shirt",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-003",
+    "name": "Oversized Graphic Tee",
+    "category": "top",
+    "retailer": "H&M",
+    "price": 19.99,
+    "imageUrl": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "edgy"
+    ],
+    "fit": "oversized",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www2.hm.com/en_us/search-results.html?q=Oversized%20Graphic%20Tee",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-004",
+    "name": "Merino Crew Neck Sweater",
+    "category": "top",
+    "retailer": "Uniqlo",
+    "price": 69.9,
+    "imageUrl": "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "camel",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "minimalist",
+      "business-casual",
+      "preppy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Merino%20Crew%20Neck%20Sweater",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-005",
+    "name": "Cropped Knit Tank",
+    "category": "top",
+    "retailer": "Zara",
+    "price": 29.9,
+    "imageUrl": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "ivory",
+    "colorFamily": "white",
+    "styleTags": [
+      "night-out",
+      "coastal",
+      "feminine",
+      "minimalist"
+    ],
+    "fit": "cropped",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Cropped%20Knit%20Tank",
+    "gender": "female"
+  },
+  {
+    "id": "top-006",
+    "name": "Polo Shirt Classic",
+    "category": "top",
+    "retailer": "Abercrombie",
+    "price": 59.0,
+    "imageUrl": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "navy",
+    "colorFamily": "blue",
+    "styleTags": [
+      "old-money",
+      "preppy",
+      "business-casual",
+      "coastal"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "spring",
+      "summer",
+      "fall"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Polo%20Shirt%20Classic",
+    "gender": "male"
+  },
+  {
+    "id": "top-007",
+    "name": "Boxy Striped Tee",
+    "category": "top",
+    "retailer": "H&M",
+    "price": 24.99,
+    "imageUrl": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "cream-stripe",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "coastal",
+      "casual",
+      "minimalist",
+      "boho"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www2.hm.com/en_us/search-results.html?q=Boxy%20Striped%20Tee",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-008",
+    "name": "Satin Slip Cami",
+    "category": "top",
+    "retailer": "Zara",
+    "price": 35.9,
+    "imageUrl": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "blush",
+    "colorFamily": "warm",
+    "styleTags": [
+      "night-out",
+      "feminine",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Satin%20Slip%20Cami",
+    "gender": "female"
+  },
+  {
+    "id": "top-009",
+    "name": "Heavyweight Hoodie",
+    "category": "top",
+    "retailer": "Nike",
+    "price": 65.0,
+    "imageUrl": "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "grey",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "athleisure"
+    ],
+    "fit": "oversized",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.nike.com/w?q=Heavyweight%20Hoodie&vst=Heavyweight%20Hoodie",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-010",
+    "name": "Tailored Blazer",
+    "category": "top",
+    "retailer": "Zara",
+    "price": 89.9,
+    "imageUrl": "https://images.unsplash.com/photo-1617952236317-0bd127407984?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "business-casual",
+      "night-out",
+      "old-money",
+      "minimalist"
+    ],
+    "fit": "tailored",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Tailored%20Blazer",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-011",
+    "name": "Ribbed Mock Neck Top",
+    "category": "top",
+    "retailer": "Uniqlo",
+    "price": 29.9,
+    "imageUrl": "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "minimalist",
+      "night-out",
+      "old-money",
+      "edgy"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Ribbed%20Mock%20Neck%20Top",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-012",
+    "name": "Linen Blazer",
+    "category": "top",
+    "retailer": "Banana Republic",
+    "price": 149.0,
+    "imageUrl": "https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "khaki",
+    "colorFamily": "earth",
+    "styleTags": [
+      "business-casual",
+      "old-money",
+      "minimalist"
+    ],
+    "fit": "tailored",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Linen%20Blazer",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-013",
+    "name": "Vintage Washed Tee",
+    "category": "top",
+    "retailer": "Abercrombie",
+    "price": 34.0,
+    "imageUrl": "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "brown",
+    "colorFamily": "earth",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "boho"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Vintage%20Washed%20Tee",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-014",
+    "name": "Cashmere V-Neck Sweater",
+    "category": "top",
+    "retailer": "Banana Republic",
+    "price": 129.0,
+    "imageUrl": "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "mushroom",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "old-money",
+      "minimalist",
+      "business-casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Cashmere%20V-Neck%20Sweater",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-015",
+    "name": "Cropped Denim Jacket",
+    "category": "top",
+    "retailer": "Levi's",
+    "price": 79.5,
+    "imageUrl": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "medium-wash",
+    "colorFamily": "blue",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "coastal",
+      "boho"
+    ],
+    "fit": "cropped",
+    "seasonTags": [
+      "spring",
+      "fall"
+    ],
+    "url": "https://www.levi.com/US/en_US/search?q=Cropped%20Denim%20Jacket",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-016",
+    "name": "Floral Print Blouse",
+    "category": "top",
+    "retailer": "Free People",
+    "price": 68.0,
+    "imageUrl": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "sage-floral",
+    "colorFamily": "cool",
+    "styleTags": [
+      "boho",
+      "coastal",
+      "feminine"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.freepeople.com/search?q=Floral%20Print%20Blouse",
+    "gender": "female"
+  },
+  {
+    "id": "top-017",
+    "name": "Zip-Up Track Jacket",
+    "category": "top",
+    "retailer": "Nike",
+    "price": 80.0,
+    "imageUrl": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "streetwear",
+      "athleisure",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=Zip-Up%20Track%20Jacket&vst=Zip-Up%20Track%20Jacket",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-018",
+    "name": "Poplin Button-Front Shirt",
+    "category": "top",
+    "retailer": "ASOS",
+    "price": 32.0,
+    "imageUrl": "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "light-blue",
+    "colorFamily": "blue",
+    "styleTags": [
+      "business-casual",
+      "minimalist",
+      "coastal"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Poplin%20Button-Front%20Shirt",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-019",
+    "name": "Sequin Party Top",
+    "category": "top",
+    "retailer": "Zara",
+    "price": 49.9,
+    "imageUrl": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "gold",
+    "colorFamily": "warm",
+    "styleTags": [
+      "night-out",
+      "feminine",
+      "edgy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Sequin%20Party%20Top",
+    "gender": "female"
+  },
+  {
+    "id": "top-020",
+    "name": "French Terry Crewneck",
+    "category": "top",
+    "retailer": "Abercrombie",
+    "price": 64.0,
+    "imageUrl": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "vintage-white",
+    "colorFamily": "white",
+    "styleTags": [
+      "casual",
+      "minimalist",
+      "preppy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=French%20Terry%20Crewneck",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-021",
+    "name": "Silk Wrap Blouse",
+    "category": "top",
+    "retailer": "Banana Republic",
+    "price": 98.0,
+    "imageUrl": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "business-casual",
+      "night-out",
+      "old-money",
+      "feminine"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Silk%20Wrap%20Blouse",
+    "gender": "female"
+  },
+  {
+    "id": "top-022",
+    "name": "Neon Crop Top",
+    "category": "top",
+    "retailer": "ASOS",
+    "price": 22.0,
+    "imageUrl": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "neon-green",
+    "colorFamily": "cool",
+    "styleTags": [
+      "streetwear",
+      "night-out",
+      "edgy"
+    ],
+    "fit": "cropped",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Neon%20Crop%20Top",
+    "gender": "female"
+  },
+  {
+    "id": "top-023",
+    "name": "Linen Camp Collar Shirt",
+    "category": "top",
+    "retailer": "Uniqlo",
+    "price": 39.9,
+    "imageUrl": "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "mint",
+    "colorFamily": "cool",
+    "styleTags": [
+      "coastal",
+      "casual",
+      "minimalist"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Linen%20Camp%20Collar%20Shirt",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-024",
+    "name": "Tailored Waistcoat",
+    "category": "top",
+    "retailer": "Zara",
+    "price": 59.9,
+    "imageUrl": "https://images.unsplash.com/photo-1617952236317-0bd127407984?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "charcoal",
+    "colorFamily": "dark",
+    "styleTags": [
+      "old-money",
+      "night-out",
+      "business-casual",
+      "edgy"
+    ],
+    "fit": "tailored",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Tailored%20Waistcoat",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-025",
+    "name": "Athletic Crop Tank",
+    "category": "top",
+    "retailer": "Nike",
+    "price": 30.0,
+    "imageUrl": "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "athleisure",
+      "streetwear",
+      "casual"
+    ],
+    "fit": "cropped",
+    "seasonTags": [
+      "spring",
+      "summer",
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=Athletic%20Crop%20Tank&vst=Athletic%20Crop%20Tank",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-001",
+    "name": "Slim Chino Pants",
+    "category": "bottom",
+    "retailer": "Uniqlo",
+    "price": 49.9,
+    "imageUrl": "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "khaki",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "preppy",
+      "minimalist"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Slim%20Chino%20Pants",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-002",
+    "name": "High Waist Straight Jeans",
+    "category": "bottom",
+    "retailer": "Levi's",
+    "price": 89.5,
+    "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "dark-wash",
+    "colorFamily": "blue",
+    "styleTags": [
+      "casual",
+      "minimalist",
+      "streetwear",
+      "old-money"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.levi.com/US/en_US/search?q=High%20Waist%20Straight%20Jeans",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-003",
+    "name": "Pleated Wide-Leg Trousers",
+    "category": "bottom",
+    "retailer": "Zara",
+    "price": 65.9,
+    "imageUrl": "https://images.unsplash.com/photo-1520006403909-838d6b92c22e?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "cream",
+    "colorFamily": "white",
+    "styleTags": [
+      "old-money",
+      "minimalist",
+      "business-casual"
+    ],
+    "fit": "wide",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Pleated%20Wide-Leg%20Trousers",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-004",
+    "name": "Cargo Jogger Pants",
+    "category": "bottom",
+    "retailer": "Nike",
+    "price": 65.0,
+    "imageUrl": "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "olive",
+    "colorFamily": "earth",
+    "styleTags": [
+      "streetwear",
+      "athleisure",
+      "casual"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=Cargo%20Jogger%20Pants&vst=Cargo%20Jogger%20Pants",
+    "gender": "male"
+  },
+  {
+    "id": "bot-005",
+    "name": "Midi Slip Skirt",
+    "category": "bottom",
+    "retailer": "Zara",
+    "price": 45.9,
+    "imageUrl": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "night-out",
+      "old-money",
+      "feminine",
+      "minimalist"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Midi%20Slip%20Skirt",
+    "gender": "female"
+  },
+  {
+    "id": "bot-006",
+    "name": "Linen Shorts",
+    "category": "bottom",
+    "retailer": "H&M",
+    "price": 24.99,
+    "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "beige",
+    "colorFamily": "earth",
+    "styleTags": [
+      "coastal",
+      "casual",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www2.hm.com/en_us/search-results.html?q=Linen%20Shorts",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-007",
+    "name": "Mini Pleated Skirt",
+    "category": "bottom",
+    "retailer": "Abercrombie",
+    "price": 59.0,
+    "imageUrl": "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "taupe",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "night-out",
+      "preppy",
+      "old-money",
+      "feminine"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "spring",
+      "summer",
+      "fall"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Mini%20Pleated%20Skirt",
+    "gender": "female"
+  },
+  {
+    "id": "bot-008",
+    "name": "Slim Fit Dress Pants",
+    "category": "bottom",
+    "retailer": "Banana Republic",
+    "price": 119.0,
+    "imageUrl": "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "charcoal",
+    "colorFamily": "dark",
+    "styleTags": [
+      "business-casual",
+      "old-money",
+      "minimalist"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Slim%20Fit%20Dress%20Pants",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-009",
+    "name": "Baggy Cargo Pants",
+    "category": "bottom",
+    "retailer": "ASOS",
+    "price": 42.0,
+    "imageUrl": "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "army-green",
+    "colorFamily": "earth",
+    "styleTags": [
+      "streetwear",
+      "edgy",
+      "casual"
+    ],
+    "fit": "wide",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Baggy%20Cargo%20Pants",
+    "gender": "male"
+  },
+  {
+    "id": "bot-010",
+    "name": "Straight Leg Khakis",
+    "category": "bottom",
+    "retailer": "Abercrombie",
+    "price": 74.0,
+    "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "tan",
+    "colorFamily": "earth",
+    "styleTags": [
+      "preppy",
+      "business-casual",
+      "old-money",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Straight%20Leg%20Khakis",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-011",
+    "name": "Flowy Maxi Skirt",
+    "category": "bottom",
+    "retailer": "Free People",
+    "price": 88.0,
+    "imageUrl": "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "peach",
+    "colorFamily": "warm",
+    "styleTags": [
+      "boho",
+      "coastal",
+      "feminine"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.freepeople.com/search?q=Flowy%20Maxi%20Skirt",
+    "gender": "female"
+  },
+  {
+    "id": "bot-012",
+    "name": "Athletic Shorts",
+    "category": "bottom",
+    "retailer": "Nike",
+    "price": 35.0,
+    "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "athleisure",
+      "streetwear",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.nike.com/w?q=Athletic%20Shorts&vst=Athletic%20Shorts",
+    "gender": "male"
+  },
+  {
+    "id": "bot-013",
+    "name": "Barrel Leg Jeans",
+    "category": "bottom",
+    "retailer": "Levi's",
+    "price": 79.5,
+    "imageUrl": "https://images.unsplash.com/photo-1520006403909-838d6b92c22e?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "light-wash",
+    "colorFamily": "blue",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "minimalist",
+      "boho"
+    ],
+    "fit": "wide",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.levi.com/US/en_US/search?q=Barrel%20Leg%20Jeans",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-014",
+    "name": "Tailored Bermuda Shorts",
+    "category": "bottom",
+    "retailer": "Banana Republic",
+    "price": 79.0,
+    "imageUrl": "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "cream",
+    "colorFamily": "white",
+    "styleTags": [
+      "coastal",
+      "business-casual",
+      "preppy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Tailored%20Bermuda%20Shorts",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-015",
+    "name": "Slim Pinstripe Trousers",
+    "category": "bottom",
+    "retailer": "Zara",
+    "price": 59.9,
+    "imageUrl": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black-pinstripe",
+    "colorFamily": "dark",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "night-out"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Slim%20Pinstripe%20Trousers",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-016",
+    "name": "Satin Mini Skirt",
+    "category": "bottom",
+    "retailer": "ASOS",
+    "price": 38.0,
+    "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "gold",
+    "colorFamily": "warm",
+    "styleTags": [
+      "night-out",
+      "feminine",
+      "edgy"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Satin%20Mini%20Skirt",
+    "gender": "female"
+  },
+  {
+    "id": "bot-017",
+    "name": "Wide Leg Linen Pants",
+    "category": "bottom",
+    "retailer": "Uniqlo",
+    "price": 49.9,
+    "imageUrl": "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "tan",
+    "colorFamily": "earth",
+    "styleTags": [
+      "coastal",
+      "minimalist",
+      "boho",
+      "casual"
+    ],
+    "fit": "wide",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Wide%20Leg%20Linen%20Pants",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-018",
+    "name": "High Waist Bike Shorts",
+    "category": "bottom",
+    "retailer": "Nike",
+    "price": 40.0,
+    "imageUrl": "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "athleisure",
+      "streetwear"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.nike.com/w?q=High%20Waist%20Bike%20Shorts&vst=High%20Waist%20Bike%20Shorts",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-019",
+    "name": "Flared Dress Trousers",
+    "category": "bottom",
+    "retailer": "Banana Republic",
+    "price": 109.0,
+    "imageUrl": "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "mushroom",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "night-out"
+    ],
+    "fit": "wide",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Flared%20Dress%20Trousers",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-020",
+    "name": "Raw Hem Cutoff Shorts",
+    "category": "bottom",
+    "retailer": "Levi's",
+    "price": 59.5,
+    "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "light-denim",
+    "colorFamily": "blue",
+    "styleTags": [
+      "coastal",
+      "casual",
+      "streetwear"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.levi.com/US/en_US/search?q=Raw%20Hem%20Cutoff%20Shorts",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-001",
+    "name": "Classic Trench Coat",
+    "category": "outerwear",
+    "retailer": "Banana Republic",
+    "price": 198.0,
+    "imageUrl": "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "camel",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "minimalist",
+      "business-casual",
+      "classic"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "fall"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Classic%20Trench%20Coat",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-002",
+    "name": "Oversized Puffer Jacket",
+    "category": "outerwear",
+    "retailer": "H&M",
+    "price": 79.99,
+    "imageUrl": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "minimalist"
+    ],
+    "fit": "oversized",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www2.hm.com/en_us/search-results.html?q=Oversized%20Puffer%20Jacket",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-003",
+    "name": "Wool Blend Overcoat",
+    "category": "outerwear",
+    "retailer": "Zara",
+    "price": 129.9,
+    "imageUrl": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "dark-brown",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Wool%20Blend%20Overcoat",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-004",
+    "name": "Track Windbreaker",
+    "category": "outerwear",
+    "retailer": "Nike",
+    "price": 85.0,
+    "imageUrl": "https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "navy",
+    "colorFamily": "blue",
+    "styleTags": [
+      "streetwear",
+      "athleisure",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "fall"
+    ],
+    "url": "https://www.nike.com/w?q=Track%20Windbreaker&vst=Track%20Windbreaker",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-005",
+    "name": "Leather Biker Jacket",
+    "category": "outerwear",
+    "retailer": "ASOS",
+    "price": 120.0,
+    "imageUrl": "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "edgy",
+      "streetwear",
+      "night-out"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "fall",
+      "spring"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Leather%20Biker%20Jacket",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-006",
+    "name": "Cotton Blazer",
+    "category": "outerwear",
+    "retailer": "Abercrombie",
+    "price": 119.0,
+    "imageUrl": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "cream",
+    "colorFamily": "white",
+    "styleTags": [
+      "business-casual",
+      "old-money",
+      "minimalist",
+      "preppy"
+    ],
+    "fit": "tailored",
+    "seasonTags": [
+      "spring",
+      "summer",
+      "fall"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Cotton%20Blazer",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-007",
+    "name": "Fleece Quarter-Zip",
+    "category": "outerwear",
+    "retailer": "Uniqlo",
+    "price": 59.9,
+    "imageUrl": "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "grey",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "casual",
+      "preppy",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Fleece%20Quarter-Zip",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-008",
+    "name": "Linen Summer Blazer",
+    "category": "outerwear",
+    "retailer": "Zara",
+    "price": 79.9,
+    "imageUrl": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "dusty-pink",
+    "colorFamily": "warm",
+    "styleTags": [
+      "night-out",
+      "feminine",
+      "coastal",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Linen%20Summer%20Blazer",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-009",
+    "name": "Longline Cardigan",
+    "category": "outerwear",
+    "retailer": "Free People",
+    "price": 98.0,
+    "imageUrl": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "oatmeal",
+    "colorFamily": "earth",
+    "styleTags": [
+      "boho",
+      "casual",
+      "coastal",
+      "minimalist"
+    ],
+    "fit": "oversized",
+    "seasonTags": [
+      "fall",
+      "spring"
+    ],
+    "url": "https://www.freepeople.com/search?q=Longline%20Cardigan",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-010",
+    "name": "Quilted Vest",
+    "category": "outerwear",
+    "retailer": "Abercrombie",
+    "price": 89.0,
+    "imageUrl": "https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "navy",
+    "colorFamily": "blue",
+    "styleTags": [
+      "preppy",
+      "old-money",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Quilted%20Vest",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-001",
+    "name": "White Leather Sneakers",
+    "category": "shoes",
+    "retailer": "Nike",
+    "price": 90.0,
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "white",
+    "colorFamily": "white",
+    "styleTags": [
+      "minimalist",
+      "casual",
+      "streetwear",
+      "old-money",
+      "coastal"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=White%20Leather%20Sneakers&vst=White%20Leather%20Sneakers",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-002",
+    "name": "Suede Chelsea Boots",
+    "category": "shoes",
+    "retailer": "Zara",
+    "price": 89.9,
+    "imageUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "night-out",
+      "edgy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Suede%20Chelsea%20Boots",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-003",
+    "name": "Chunky Lug Boots",
+    "category": "shoes",
+    "retailer": "ASOS",
+    "price": 72.0,
+    "imageUrl": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "dark-brown",
+    "colorFamily": "earth",
+    "styleTags": [
+      "streetwear",
+      "edgy",
+      "boho"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Chunky%20Lug%20Boots",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-004",
+    "name": "Classic Loafers",
+    "category": "shoes",
+    "retailer": "Banana Republic",
+    "price": 148.0,
+    "imageUrl": "https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "tan",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "preppy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "fall"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Classic%20Loafers",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-005",
+    "name": "Trail Running Sneakers",
+    "category": "shoes",
+    "retailer": "Nike",
+    "price": 110.0,
+    "imageUrl": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "grey-multi",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "streetwear",
+      "athleisure",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=Trail%20Running%20Sneakers&vst=Trail%20Running%20Sneakers",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-006",
+    "name": "Strappy Heeled Sandals",
+    "category": "shoes",
+    "retailer": "Zara",
+    "price": 65.9,
+    "imageUrl": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "nude",
+    "colorFamily": "earth",
+    "styleTags": [
+      "night-out",
+      "feminine",
+      "old-money",
+      "coastal"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Strappy%20Heeled%20Sandals",
+    "gender": "female"
+  },
+  {
+    "id": "shoe-007",
+    "name": "Platform Canvas Sneakers",
+    "category": "shoes",
+    "retailer": "H&M",
+    "price": 34.99,
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "white",
+    "colorFamily": "white",
+    "styleTags": [
+      "casual",
+      "streetwear",
+      "coastal",
+      "boho"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www2.hm.com/en_us/search-results.html?q=Platform%20Canvas%20Sneakers",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-008",
+    "name": "Leather Derby Shoes",
+    "category": "shoes",
+    "retailer": "Banana Republic",
+    "price": 168.0,
+    "imageUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "business-casual",
+      "old-money",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Leather%20Derby%20Shoes",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-009",
+    "name": "Espadrille Flats",
+    "category": "shoes",
+    "retailer": "Zara",
+    "price": 45.9,
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "tan",
+    "colorFamily": "earth",
+    "styleTags": [
+      "coastal",
+      "casual",
+      "boho",
+      "feminine"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Espadrille%20Flats",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-010",
+    "name": "High-Top Basketball Sneakers",
+    "category": "shoes",
+    "retailer": "Nike",
+    "price": 120.0,
+    "imageUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black-white",
+    "colorFamily": "dark",
+    "styleTags": [
+      "streetwear",
+      "athleisure",
+      "edgy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=High-Top%20Basketball%20Sneakers&vst=High-Top%20Basketball%20Sneakers",
+    "gender": "male"
+  },
+  {
+    "id": "shoe-011",
+    "name": "Ballet Flats",
+    "category": "shoes",
+    "retailer": "Uniqlo",
+    "price": 39.9,
+    "imageUrl": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "cream",
+    "colorFamily": "white",
+    "styleTags": [
+      "old-money",
+      "feminine",
+      "minimalist",
+      "preppy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer",
+      "fall"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Ballet%20Flats",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-012",
+    "name": "Leather Ankle Boots",
+    "category": "shoes",
+    "retailer": "Abercrombie",
+    "price": 149.0,
+    "imageUrl": "https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "tan",
+    "colorFamily": "earth",
+    "styleTags": [
+      "casual",
+      "boho",
+      "streetwear",
+      "old-money"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "spring"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Leather%20Ankle%20Boots",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-013",
+    "name": "Platform Heeled Mules",
+    "category": "shoes",
+    "retailer": "Zara",
+    "price": 79.9,
+    "imageUrl": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "night-out",
+      "edgy",
+      "feminine"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Platform%20Heeled%20Mules",
+    "gender": "female"
+  },
+  {
+    "id": "shoe-014",
+    "name": "Retro Dad Sneakers",
+    "category": "shoes",
+    "retailer": "Abercrombie",
+    "price": 89.0,
+    "imageUrl": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "grey-cream",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "preppy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Retro%20Dad%20Sneakers",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-015",
+    "name": "Raffia Wedge Sandals",
+    "category": "shoes",
+    "retailer": "Free People",
+    "price": 118.0,
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "natural",
+    "colorFamily": "earth",
+    "styleTags": [
+      "coastal",
+      "boho",
+      "feminine"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.freepeople.com/search?q=Raffia%20Wedge%20Sandals",
+    "gender": "female"
+  },
+  {
+    "id": "shoe-016",
+    "name": "Classic Slides",
+    "category": "shoes",
+    "retailer": "H&M",
+    "price": 19.99,
+    "imageUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "white",
+    "colorFamily": "white",
+    "styleTags": [
+      "casual",
+      "streetwear",
+      "coastal",
+      "athleisure"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www2.hm.com/en_us/search-results.html?q=Classic%20Slides",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-001",
+    "name": "Minimal Gold Chain Necklace",
+    "category": "accessory",
+    "retailer": "Zara",
+    "price": 25.9,
+    "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "gold",
+    "colorFamily": "warm",
+    "styleTags": [
+      "old-money",
+      "night-out",
+      "minimalist",
+      "feminine"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Minimal%20Gold%20Chain%20Necklace",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-002",
+    "name": "Structured Tote Bag",
+    "category": "accessory",
+    "retailer": "Banana Republic",
+    "price": 128.0,
+    "imageUrl": "https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "tan",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Structured%20Tote%20Bag",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-003",
+    "name": "Baseball Cap",
+    "category": "accessory",
+    "retailer": "Nike",
+    "price": 28.0,
+    "imageUrl": "https://images.unsplash.com/photo-1598522325074-042db73aa4e6?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "streetwear",
+      "athleisure",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=Baseball%20Cap&vst=Baseball%20Cap",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-004",
+    "name": "Woven Straw Hat",
+    "category": "accessory",
+    "retailer": "Zara",
+    "price": 29.9,
+    "imageUrl": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "natural",
+    "colorFamily": "earth",
+    "styleTags": [
+      "coastal",
+      "boho",
+      "casual",
+      "feminine"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Woven%20Straw%20Hat",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-005",
+    "name": "Leather Belt",
+    "category": "accessory",
+    "retailer": "Uniqlo",
+    "price": 29.9,
+    "imageUrl": "https://images.unsplash.com/photo-1564859228273-274232fdb516?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "minimalist",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Leather%20Belt",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-006",
+    "name": "Mini Crossbody Bag",
+    "category": "accessory",
+    "retailer": "ASOS",
+    "price": 38.0,
+    "imageUrl": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "night-out",
+      "streetwear",
+      "casual",
+      "edgy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Mini%20Crossbody%20Bag",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-007",
+    "name": "Silk Hair Scarf",
+    "category": "accessory",
+    "retailer": "Zara",
+    "price": 22.9,
+    "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "blush",
+    "colorFamily": "warm",
+    "styleTags": [
+      "old-money",
+      "coastal",
+      "boho",
+      "feminine"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Silk%20Hair%20Scarf",
+    "gender": "female"
+  },
+  {
+    "id": "acc-008",
+    "name": "Silver Hoop Earrings",
+    "category": "accessory",
+    "retailer": "H&M",
+    "price": 14.99,
+    "imageUrl": "https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "silver",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "night-out",
+      "minimalist",
+      "coastal",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www2.hm.com/en_us/search-results.html?q=Silver%20Hoop%20Earrings",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-009",
+    "name": "Wool Beanie",
+    "category": "accessory",
+    "retailer": "Abercrombie",
+    "price": 34.0,
+    "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "edgy",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Wool%20Beanie",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-010",
+    "name": "Leather Watch",
+    "category": "accessory",
+    "retailer": "Banana Republic",
+    "price": 148.0,
+    "imageUrl": "https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "tan",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "minimalist",
+      "classic"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Leather%20Watch",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-011",
+    "name": "Chunky Chain Bracelet",
+    "category": "accessory",
+    "retailer": "ASOS",
+    "price": 22.0,
+    "imageUrl": "https://images.unsplash.com/photo-1598522325074-042db73aa4e6?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "gold",
+    "colorFamily": "warm",
+    "styleTags": [
+      "streetwear",
+      "night-out",
+      "edgy"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Chunky%20Chain%20Bracelet",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-012",
+    "name": "Woven Raffia Bag",
+    "category": "accessory",
+    "retailer": "Free People",
+    "price": 68.0,
+    "imageUrl": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "natural",
+    "colorFamily": "earth",
+    "styleTags": [
+      "coastal",
+      "boho",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.freepeople.com/search?q=Woven%20Raffia%20Bag",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-013",
+    "name": "Bucket Hat",
+    "category": "accessory",
+    "retailer": "H&M",
+    "price": 17.99,
+    "imageUrl": "https://images.unsplash.com/photo-1564859228273-274232fdb516?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "cream",
+    "colorFamily": "white",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "coastal",
+      "boho"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www2.hm.com/en_us/search-results.html?q=Bucket%20Hat",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-014",
+    "name": "Tortoiseshell Sunglasses",
+    "category": "accessory",
+    "retailer": "Zara",
+    "price": 35.9,
+    "imageUrl": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "tortoise",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "coastal",
+      "minimalist",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Tortoiseshell%20Sunglasses",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-015",
+    "name": "Chain-Link Belt",
+    "category": "accessory",
+    "retailer": "ASOS",
+    "price": 28.0,
+    "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "gold",
+    "colorFamily": "warm",
+    "styleTags": [
+      "night-out",
+      "edgy",
+      "streetwear",
+      "feminine"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Chain-Link%20Belt",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-016",
+    "name": "Canvas Backpack",
+    "category": "accessory",
+    "retailer": "Nike",
+    "price": 45.0,
+    "imageUrl": "https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "streetwear",
+      "athleisure",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=Canvas%20Backpack&vst=Canvas%20Backpack",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-017",
+    "name": "Pearl Pendant Necklace",
+    "category": "accessory",
+    "retailer": "Zara",
+    "price": 22.9,
+    "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "white-gold",
+    "colorFamily": "white",
+    "styleTags": [
+      "old-money",
+      "feminine",
+      "coastal",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Pearl%20Pendant%20Necklace",
+    "gender": "female"
+  },
+  {
+    "id": "acc-018",
+    "name": "Logo Bucket Bag",
+    "category": "accessory",
+    "retailer": "Abercrombie",
+    "price": 79.0,
+    "imageUrl": "https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "tan",
+    "colorFamily": "earth",
+    "styleTags": [
+      "preppy",
+      "casual",
+      "old-money"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Logo%20Bucket%20Bag",
+    "gender": "unisex"
+  },
+  {
+    "id": "acc-019",
+    "name": "Crochet Hair Clip",
+    "category": "accessory",
+    "retailer": "Free People",
+    "price": 18.0,
+    "imageUrl": "https://images.unsplash.com/photo-1598522325074-042db73aa4e6?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "peach",
+    "colorFamily": "warm",
+    "styleTags": [
+      "boho",
+      "coastal",
+      "feminine",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.freepeople.com/search?q=Crochet%20Hair%20Clip",
+    "gender": "female"
+  },
+  {
+    "id": "acc-020",
+    "name": "Chunky Knit Scarf",
+    "category": "accessory",
+    "retailer": "Uniqlo",
+    "price": 29.9,
+    "imageUrl": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "oatmeal",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "minimalist",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Chunky%20Knit%20Scarf",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-026",
+    "name": "Cutout Party Top",
+    "category": "top",
+    "retailer": "ASOS",
+    "price": 34.0,
+    "imageUrl": "https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "night-out",
+      "edgy",
+      "feminine"
+    ],
+    "fit": "cropped",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Cutout%20Party%20Top",
+    "gender": "female"
+  },
+  {
+    "id": "top-027",
+    "name": "Oversized Denim Shirt",
+    "category": "top",
+    "retailer": "Levi's",
+    "price": 79.5,
+    "imageUrl": "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "medium-denim",
+    "colorFamily": "blue",
+    "styleTags": [
+      "casual",
+      "streetwear",
+      "coastal",
+      "boho"
+    ],
+    "fit": "oversized",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.levi.com/US/en_US/search?q=Oversized%20Denim%20Shirt",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-028",
+    "name": "Sheer Organza Blouse",
+    "category": "top",
+    "retailer": "Zara",
+    "price": 49.9,
+    "imageUrl": "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "white",
+    "colorFamily": "white",
+    "styleTags": [
+      "old-money",
+      "feminine",
+      "night-out",
+      "minimalist"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Sheer%20Organza%20Blouse",
+    "gender": "female"
+  },
+  {
+    "id": "top-029",
+    "name": "Cable Knit Sweater",
+    "category": "top",
+    "retailer": "Abercrombie",
+    "price": 89.0,
+    "imageUrl": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "cream",
+    "colorFamily": "white",
+    "styleTags": [
+      "old-money",
+      "preppy",
+      "coastal",
+      "casual"
+    ],
+    "fit": "oversized",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Cable%20Knit%20Sweater",
+    "gender": "unisex"
+  },
+  {
+    "id": "top-030",
+    "name": "Sport Jersey Top",
+    "category": "top",
+    "retailer": "Nike",
+    "price": 45.0,
+    "imageUrl": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "blue",
+    "colorFamily": "blue",
+    "styleTags": [
+      "streetwear",
+      "athleisure",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=Sport%20Jersey%20Top&vst=Sport%20Jersey%20Top",
+    "gender": "male"
+  },
+  {
+    "id": "bot-021",
+    "name": "Cropped Wide-Leg Trousers",
+    "category": "bottom",
+    "retailer": "Banana Republic",
+    "price": 89.0,
+    "imageUrl": "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "charcoal",
+    "colorFamily": "dark",
+    "styleTags": [
+      "minimalist",
+      "business-casual",
+      "old-money"
+    ],
+    "fit": "wide",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://bananarepublic.gap.com/browse/search.do?searchText=Cropped%20Wide-Leg%20Trousers",
+    "gender": "unisex"
+  },
+  {
+    "id": "bot-022",
+    "name": "Leather Pencil Skirt",
+    "category": "bottom",
+    "retailer": "Zara",
+    "price": 55.9,
+    "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "night-out",
+      "business-casual",
+      "edgy",
+      "feminine"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Leather%20Pencil%20Skirt",
+    "gender": "female"
+  },
+  {
+    "id": "bot-023",
+    "name": "Tiered Boho Skirt",
+    "category": "bottom",
+    "retailer": "Free People",
+    "price": 98.0,
+    "imageUrl": "https://images.unsplash.com/photo-1520006403909-838d6b92c22e?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "dusty-rose",
+    "colorFamily": "warm",
+    "styleTags": [
+      "boho",
+      "coastal",
+      "feminine"
+    ],
+    "fit": "relaxed",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.freepeople.com/search?q=Tiered%20Boho%20Skirt",
+    "gender": "female"
+  },
+  {
+    "id": "bot-024",
+    "name": "Ribbed Knit Mini Skirt",
+    "category": "bottom",
+    "retailer": "H&M",
+    "price": 27.99,
+    "imageUrl": "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "grey",
+    "colorFamily": "neutral",
+    "styleTags": [
+      "night-out",
+      "streetwear",
+      "casual"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www2.hm.com/en_us/search-results.html?q=Ribbed%20Knit%20Mini%20Skirt",
+    "gender": "female"
+  },
+  {
+    "id": "bot-025",
+    "name": "Slim Trousers",
+    "category": "bottom",
+    "retailer": "Uniqlo",
+    "price": 59.9,
+    "imageUrl": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "minimalist",
+      "business-casual",
+      "old-money",
+      "night-out"
+    ],
+    "fit": "slim",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.uniqlo.com/us/en/spu/search?q=Slim%20Trousers",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-017",
+    "name": "Pointed-Toe Kitten Heels",
+    "category": "shoes",
+    "retailer": "Zara",
+    "price": 69.9,
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "beige",
+    "colorFamily": "earth",
+    "styleTags": [
+      "old-money",
+      "business-casual",
+      "feminine",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Pointed-Toe%20Kitten%20Heels",
+    "gender": "female"
+  },
+  {
+    "id": "shoe-018",
+    "name": "Chunky Sandals",
+    "category": "shoes",
+    "retailer": "ASOS",
+    "price": 55.0,
+    "imageUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "black",
+    "colorFamily": "dark",
+    "styleTags": [
+      "streetwear",
+      "edgy",
+      "casual"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.asos.com/us/search/?q=Chunky%20Sandals",
+    "gender": "unisex"
+  },
+  {
+    "id": "shoe-019",
+    "name": "Bow-Detail Flats",
+    "category": "shoes",
+    "retailer": "Zara",
+    "price": 45.9,
+    "imageUrl": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "cream",
+    "colorFamily": "white",
+    "styleTags": [
+      "old-money",
+      "feminine",
+      "preppy",
+      "minimalist"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "spring",
+      "summer"
+    ],
+    "url": "https://www.zara.com/us/en/search?searchTerm=Bow-Detail%20Flats",
+    "gender": "female"
+  },
+  {
+    "id": "shoe-020",
+    "name": "Running Sneakers",
+    "category": "shoes",
+    "retailer": "Nike",
+    "price": 95.0,
+    "imageUrl": "https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "white-blue",
+    "colorFamily": "white",
+    "styleTags": [
+      "athleisure",
+      "casual",
+      "streetwear"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "all"
+    ],
+    "url": "https://www.nike.com/w?q=Running%20Sneakers&vst=Running%20Sneakers",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-011",
+    "name": "Denim Maxi Coat",
+    "category": "outerwear",
+    "retailer": "Levi's",
+    "price": 148.0,
+    "imageUrl": "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "dark-denim",
+    "colorFamily": "blue",
+    "styleTags": [
+      "streetwear",
+      "casual",
+      "edgy"
+    ],
+    "fit": "oversized",
+    "seasonTags": [
+      "spring",
+      "fall"
+    ],
+    "url": "https://www.levi.com/US/en_US/search?q=Denim%20Maxi%20Coat",
+    "gender": "unisex"
+  },
+  {
+    "id": "out-012",
+    "name": "Sherpa-Lined Jacket",
+    "category": "outerwear",
+    "retailer": "Abercrombie",
+    "price": 139.0,
+    "imageUrl": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400&h=600&fit=crop&auto=format&q=80",
+    "color": "camel",
+    "colorFamily": "earth",
+    "styleTags": [
+      "casual",
+      "preppy",
+      "coastal"
+    ],
+    "fit": "regular",
+    "seasonTags": [
+      "fall",
+      "winter"
+    ],
+    "url": "https://www.abercrombie.com/shop/us/p/search?q=Sherpa-Lined%20Jacket",
+    "gender": "unisex"
+  }
+]
