@@ -145,8 +145,8 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
           )}
         </button>
 
-        {/* Square image area */}
-        <div className="aspect-square w-full overflow-hidden bg-mystyle-stone/20 relative">
+        {/* Portrait image area — 2:3 ratio shows full-body model */}
+        <div className="aspect-[2/3] w-full overflow-hidden bg-mystyle-stone/20 relative">
 
           {/* Loading overlay */}
           {isGenerating && !cardImageUrl && (

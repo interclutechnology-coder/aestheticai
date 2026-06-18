@@ -93,7 +93,7 @@ export const useOutfitStore = create<OutfitStore>()(
         set({ outfits: [], currentIndex: 0, isLoading: false }),
     }),
     {
-      name: "mystyle-outfit-store",
+      name: "mystyle-outfit-store-v2", // bumped to clear old cached outfit data with garbage imageUrls
       skipHydration: true,
       partialize: (state) => ({
         prompt: state.prompt,

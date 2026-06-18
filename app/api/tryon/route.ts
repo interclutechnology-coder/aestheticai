@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 
+export const maxDuration = 60;
+
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_KEY });
 
 export async function POST(req: NextRequest) {

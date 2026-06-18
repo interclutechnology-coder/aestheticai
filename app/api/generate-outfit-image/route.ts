@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 
+// Extend Vercel function timeout — FLUX Schnell takes 3–8s per image
+export const maxDuration = 60;
+
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_KEY });
 
-function replicateUrl(output: unknown): string | null {
-  if (!output) return null;
+function extractUrl(output: unknown): string | null {
   const arr = Array.isArray(output) ? output : [output];
   const val = arr[0];
   if (!val) return null;
-  // Replicate FileOutput objects have a .url() method; plain strings work directly
-  if (typeof val === "object" && "url" in val && typeof (val as { url: unknown }).url === "function") {
-    return String((val as { url: () => unknown }).url());
+  // Replicate FileOutput objects expose .url() method
+  if (typeof val === "object" && val !== null && "url" in val) {
+    const fn = (val as { url: unknown }).url;
+    return typeof fn === "function" ? String((fn as () => unknown)()) : String(val);
   }
   const str = String(val);
   return str.startsWith("http") ? str : null;
@@ -21,6 +24,7 @@ export async function POST(req: NextRequest) {
     const { outfitId, items, title, reasoning } = await req.json();
 
     if (!process.env.REPLICATE_API_KEY) {
+      console.error("[generate-outfit-image] REPLICATE_API_KEY not set");
       return NextResponse.json({ imageUrl: null, garmentImageUrl: null }, { status: 500 });
     }
 
@@ -34,43 +38,50 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ imageUrl: null, garmentImageUrl: null }, { status: 400 });
     }
 
-    const itemDesc = [
+    // Determine model gender
+    const modelType =
+      top.gender === "male"
+        ? "male fashion model"
+        : top.gender === "female"
+        ? "female fashion model"
+        : "fashion model";
+
+    // Full outfit description
+    const outfitDesc = [
       `${top.name}${top.color ? ` in ${top.color}` : ""}`,
       `${bottom.name}${bottom.color ? ` in ${bottom.color}` : ""}`,
       shoes.name,
-      outerwear?.name,
-      accessory?.name,
+      outerwear?.name ?? null,
+      accessory?.name ?? null,
     ]
       .filter(Boolean)
       .join(", ");
 
-    // Prompt 1: Full outfit flat-lay (for card display)
-    const flatLayPrompt =
-      `Professional fashion photography flat lay. ${itemDesc}. ` +
-      `Styled as: ${title}. ${reasoning || ""}. ` +
-      `Clothing items beautifully arranged on clean white marble surface, ` +
-      `soft overhead natural lighting, editorial fashion magazine quality, ` +
-      `sharp focus, photorealistic, no people, no mannequins.`;
+    // Prompt 1: Fashion model wearing the complete outfit
+    const modelPrompt =
+      `Professional fashion editorial photograph. Stylish ${modelType} wearing ${outfitDesc}. ` +
+      `${title} aesthetic. ${reasoning ? reasoning + ". " : ""}` +
+      `Full body shot, clean white studio background, sharp focus, ` +
+      `Vogue magazine quality, photorealistic, 4k fashion photography.`;
 
-    // Prompt 2: Single garment image (for virtual try-on via IDM-VTON)
+    // Prompt 2: Clean product shot of the top item only (for IDM-VTON virtual try-on)
     const garmentPrompt =
-      `Product photography of ${top.name}${top.color ? ` in ${top.color}` : ""}. ` +
-      `Single clothing item, displayed flat on pure white background, ` +
-      `front view, commercial clothing product photo, ` +
-      `no person, no mannequin, clean white background only.`;
+      `Commercial product photograph. ` +
+      `${top.name}${top.color ? ` in ${top.color}` : ""} clothing item, ` +
+      `displayed flat on a pure white background, front view, ` +
+      `single garment only, no person, no mannequin, clean studio product photo.`;
 
-    console.log(`[generate-outfit-image] Generating images for ${outfitId}`);
+    console.log(`[generate-outfit-image] Generating for outfit "${title}" (${outfitId})`);
 
-    // Generate both images in parallel using FLUX Schnell
-    const [flatLayOutput, garmentOutput] = await Promise.all([
+    // Run both in parallel — flux-schnell takes ~3–5s each
+    const [outfitOutput, garmentOutput] = await Promise.all([
       replicate.run("black-forest-labs/flux-schnell", {
         input: {
-          prompt: flatLayPrompt,
-          aspect_ratio: "1:1",
+          prompt: modelPrompt,
+          aspect_ratio: "2:3",   // portrait — shows full body
           output_format: "webp",
-          output_quality: 85,
+          output_quality: 90,
           num_outputs: 1,
-          go_fast: true,
         },
       }),
       replicate.run("black-forest-labs/flux-schnell", {
@@ -80,15 +91,16 @@ export async function POST(req: NextRequest) {
           output_format: "webp",
           output_quality: 85,
           num_outputs: 1,
-          go_fast: true,
         },
       }),
     ]);
 
-    const imageUrl = replicateUrl(flatLayOutput);
-    const garmentImageUrl = replicateUrl(garmentOutput);
+    const imageUrl = extractUrl(outfitOutput);
+    const garmentImageUrl = extractUrl(garmentOutput);
 
-    console.log(`[generate-outfit-image] Done — imageUrl=${!!imageUrl} garmentUrl=${!!garmentImageUrl}`);
+    console.log(
+      `[generate-outfit-image] Done — outfit=${imageUrl ? "✓" : "✗"} garment=${garmentImageUrl ? "✓" : "✗"}`
+    );
 
     return NextResponse.json({ imageUrl, garmentImageUrl });
   } catch (err) {
