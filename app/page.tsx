@@ -6,6 +6,7 @@ import { Sparkles, ArrowRight, Wand2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { FiltersPanel } from "@/components/FiltersPanel";
 import { ExplorePresets } from "@/components/ExplorePresets";
+import { PhotoUpload } from "@/components/PhotoUpload";
 import { useOutfitStore } from "@/store/outfitStore";
 import type { Filters } from "@/types";
 
@@ -49,7 +50,7 @@ const COLLAGE_BLOCKS = [
 
 export default function HomePage() {
   const router = useRouter();
-  const { prompt, filters, setPrompt, setFilters, setOutfits, setLoading } = useOutfitStore();
+  const { prompt, filters, setPrompt, setFilters, setOutfits, setLoading, userPhotoUrl, setUserPhotoUrl } = useOutfitStore();
   const [localPrompt, setLocalPrompt] = useState(prompt || "");
   const [localFilters, setLocalFilters] = useState<Filters>(
     filters ?? {
@@ -150,6 +151,14 @@ export default function HomePage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="rounded-2xl border border-mystyle-stone bg-white/95 p-5 shadow-lg backdrop-blur-sm sm:p-6"
         >
+          {/* Photo upload — see yourself in the outfit */}
+          <PhotoUpload
+            onUpload={(url) => setUserPhotoUrl(url || null)}
+            currentUrl={userPhotoUrl}
+          />
+
+          <div className="my-4 border-t border-mystyle-stone/60" />
+
           {/* Prompt textarea */}
           <div className="relative">
             <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-mystyle-muted">

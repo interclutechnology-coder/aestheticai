@@ -12,6 +12,10 @@ interface OutfitStore {
   currentIndex: number;
   isLoading: boolean;
 
+  // User photo for virtual try-on
+  userPhotoUrl: string | null;
+  setUserPhotoUrl: (url: string | null) => void;
+
   // Actions
   setPrompt: (prompt: string) => void;
   setFilters: (filters: Filters) => void;
@@ -49,7 +53,9 @@ export const useOutfitStore = create<OutfitStore>()(
       outfits: [],
       currentIndex: 0,
       isLoading: false,
+      userPhotoUrl: null,
 
+      setUserPhotoUrl: (userPhotoUrl) => set({ userPhotoUrl }),
       setPrompt: (prompt) => set({ prompt }),
       setFilters: (filters) => set({ filters }),
       setOutfits: (outfits) => set({ outfits, currentIndex: 0 }),
@@ -94,6 +100,7 @@ export const useOutfitStore = create<OutfitStore>()(
         filters: state.filters,
         outfits: state.outfits,
         currentIndex: state.currentIndex,
+        userPhotoUrl: state.userPhotoUrl,
       }),
     }
   )

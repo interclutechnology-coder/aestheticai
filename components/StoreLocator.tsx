@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { X, MapPin, Navigation, Store, Clock, AlertCircle } from "lucide-react";
+import { X, MapPin, Navigation, Store, Clock, Star, ExternalLink, Loader2 } from "lucide-react";
 
 interface StoreLocatorProps {
   open: boolean;
@@ -10,109 +10,71 @@ interface StoreLocatorProps {
   retailers: string[];
 }
 
-interface MockStore {
+interface RealStore {
   name: string;
   address: string;
-  neighborhood: string;
-  distance: string;
-  hours: string;
   retailer: string;
-  inStock: boolean;
-}
-
-const MOCK_STORES: Record<string, MockStore[]> = {
-  Zara: [
-    { name: "Zara", address: "123 Main St", neighborhood: "Downtown", distance: "0.8 mi", hours: "10am–9pm", retailer: "Zara", inStock: true },
-    { name: "Zara", address: "456 Mall Blvd", neighborhood: "Westfield Mall", distance: "2.3 mi", hours: "10am–9pm", retailer: "Zara", inStock: true },
-  ],
-  Uniqlo: [
-    { name: "Uniqlo", address: "789 Fashion Ave", neighborhood: "City Center", distance: "1.1 mi", hours: "10am–8pm", retailer: "Uniqlo", inStock: true },
-    { name: "Uniqlo", address: "321 Park St", neighborhood: "Uptown", distance: "3.0 mi", hours: "10am–8pm", retailer: "Uniqlo", inStock: false },
-  ],
-  Nike: [
-    { name: "Nike Factory Store", address: "555 Sport Blvd", neighborhood: "East Side", distance: "1.5 mi", hours: "9am–9pm", retailer: "Nike", inStock: true },
-    { name: "Nike Store", address: "222 Athletic Dr", neighborhood: "Midtown", distance: "2.8 mi", hours: "9am–9pm", retailer: "Nike", inStock: true },
-  ],
-  "H&M": [
-    { name: "H&M", address: "100 High St", neighborhood: "Downtown", distance: "0.5 mi", hours: "9am–8pm", retailer: "H&M", inStock: true },
-    { name: "H&M", address: "400 Shopping Lane", neighborhood: "West Mall", distance: "4.2 mi", hours: "10am–9pm", retailer: "H&M", inStock: false },
-  ],
-  "Free People": [
-    { name: "Free People", address: "707 Boho Ave", neighborhood: "Arts District", distance: "2.1 mi", hours: "11am–7pm", retailer: "Free People", inStock: true },
-  ],
-  Abercrombie: [
-    { name: "Abercrombie & Fitch", address: "808 Prep St", neighborhood: "Galleria", distance: "3.5 mi", hours: "10am–9pm", retailer: "Abercrombie", inStock: true },
-  ],
-  "Levi's": [
-    { name: "Levi's Store", address: "909 Denim Dr", neighborhood: "Union Square", distance: "1.8 mi", hours: "10am–8pm", retailer: "Levi's", inStock: true },
-  ],
-  "Banana Republic": [
-    { name: "Banana Republic", address: "600 Business Blvd", neighborhood: "Financial District", distance: "0.9 mi", hours: "9am–7pm", retailer: "Banana Republic", inStock: true },
-  ],
-  ASOS: [],
-};
-
-function getStoresForRetailers(retailers: string[]): MockStore[] {
-  const results: MockStore[] = [];
-  for (const retailer of retailers) {
-    const key = Object.keys(MOCK_STORES).find(
-      (k) =>
-        retailer.toLowerCase().includes(k.toLowerCase()) ||
-        k.toLowerCase().includes(retailer.toLowerCase())
-    );
-    if (key) results.push(...MOCK_STORES[key]);
-  }
-  return results;
+  distance: string;
+  openNow: boolean | null;
+  rating: number | null;
+  mapsUrl: string;
 }
 
 export function StoreLocator({ open, onClose, retailers }: StoreLocatorProps) {
   const [zipCode, setZipCode] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [locating, setLocating] = useState(false);
+  const [stores, setStores] = useState<RealStore[]>([]);
   const [locationLabel, setLocationLabel] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const relevantStores = getStoresForRetailers(retailers);
-  const onlineOnlyRetailers = retailers.filter((r) => {
-    const key = Object.keys(MOCK_STORES).find(
-      (k) => r.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(r.toLowerCase())
-    );
-    return key && MOCK_STORES[key].length === 0;
-  });
+  const searchStores = async (lat?: number, lng?: number, zip?: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/stores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lat, lng, zipCode: zip, retailers }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Search failed");
+      setStores(data.stores || []);
+      setLocationLabel(data.locationLabel || zip || "your location");
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Search failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLocate = () => {
-    setLocating(true);
-    if (typeof navigator !== "undefined" && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        () => {
-          setLocationLabel("your current location");
-          setSubmitted(true);
-          setLocating(false);
-        },
-        () => {
-          setLocationLabel("nearby");
-          setSubmitted(true);
-          setLocating(false);
-        }
-      );
-    } else {
-      setLocationLabel("nearby");
-      setSubmitted(true);
-      setLocating(false);
+    if (!navigator.geolocation) {
+      setError("Geolocation not supported by your browser");
+      return;
     }
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => searchStores(pos.coords.latitude, pos.coords.longitude),
+      () => {
+        setLoading(false);
+        setError("Could not get your location — try entering a zip code instead");
+      }
+    );
   };
 
   const handleZipSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (zipCode.trim().length >= 3) {
-      setLocationLabel(`near ${zipCode.trim()}`);
-      setSubmitted(true);
-    }
+    if (zipCode.trim().length >= 3) searchStores(undefined, undefined, zipCode.trim());
   };
 
   const handleReset = () => {
     setSubmitted(false);
+    setStores([]);
     setZipCode("");
     setLocationLabel("");
+    setError(null);
   };
 
   return (
@@ -131,10 +93,7 @@ export function StoreLocator({ open, onClose, retailers }: StoreLocatorProps) {
               </Dialog.Title>
             </div>
             <Dialog.Close asChild>
-              <button
-                type="button"
-                className="rounded-lg p-1.5 text-mystyle-muted hover:bg-mystyle-stone/60 transition-colors"
-              >
+              <button type="button" className="rounded-lg p-1.5 text-mystyle-muted hover:bg-mystyle-stone/60 transition-colors">
                 <X className="h-4 w-4" />
               </button>
             </Dialog.Close>
@@ -144,23 +103,31 @@ export function StoreLocator({ open, onClose, retailers }: StoreLocatorProps) {
             {!submitted ? (
               <div className="space-y-4">
                 <p className="text-sm text-mystyle-muted">
-                  Find physical stores near you carrying items from this outfit.
-                  Checking: <span className="font-medium text-mystyle-dark">{retailers.join(", ")}</span>
+                  Find stores near you carrying:{" "}
+                  <span className="font-medium text-mystyle-dark">{retailers.join(", ")}</span>
                 </p>
+
+                {error && (
+                  <p className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-600">{error}</p>
+                )}
 
                 <button
                   type="button"
                   onClick={handleLocate}
-                  disabled={locating}
+                  disabled={loading}
                   className="w-full flex items-center justify-center gap-2 rounded-xl bg-mystyle-dark py-3 text-sm font-semibold text-white hover:bg-mystyle-charcoal disabled:opacity-50 transition-all"
                 >
-                  <Navigation className="h-4 w-4" />
-                  {locating ? "Detecting location…" : "Use My Current Location"}
+                  {loading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Navigation className="h-4 w-4" />
+                  )}
+                  {loading ? "Searching…" : "Use My Current Location"}
                 </button>
 
                 <div className="flex items-center gap-3">
                   <div className="flex-1 border-t border-mystyle-stone" />
-                  <span className="text-xs text-mystyle-muted">or enter zip code</span>
+                  <span className="text-xs text-mystyle-muted">or</span>
                   <div className="flex-1 border-t border-mystyle-stone" />
                 </div>
 
@@ -169,13 +136,14 @@ export function StoreLocator({ open, onClose, retailers }: StoreLocatorProps) {
                     type="text"
                     value={zipCode}
                     onChange={(e) => setZipCode(e.target.value)}
-                    placeholder="e.g. 10001"
+                    placeholder="Enter zip code"
                     maxLength={10}
                     className="flex-1 rounded-xl border border-mystyle-stone bg-mystyle-cream/40 px-4 py-2.5 text-sm text-mystyle-dark placeholder:text-mystyle-muted/60 focus:outline-none focus:ring-2 focus:ring-mystyle-accent/50"
                   />
                   <button
                     type="submit"
-                    className="rounded-xl border border-mystyle-stone bg-white px-4 py-2.5 text-sm font-medium text-mystyle-dark hover:bg-mystyle-stone/40 transition-all"
+                    disabled={loading}
+                    className="rounded-xl border border-mystyle-stone bg-white px-4 py-2.5 text-sm font-medium text-mystyle-dark hover:bg-mystyle-stone/40 disabled:opacity-50 transition-all"
                   >
                     Search
                   </button>
@@ -184,56 +152,54 @@ export function StoreLocator({ open, onClose, retailers }: StoreLocatorProps) {
             ) : (
               <div className="space-y-4">
                 <p className="text-sm font-medium text-mystyle-dark">
-                  Stores {locationLabel}:
+                  Stores near {locationLabel}:
                 </p>
 
-                {onlineOnlyRetailers.length > 0 && (
-                  <div className="flex items-start gap-2 rounded-xl border border-mystyle-stone/60 bg-mystyle-cream/40 p-3 text-xs text-mystyle-muted">
-                    <AlertCircle className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
-                    <span>
-                      <span className="font-medium">{onlineOnlyRetailers.join(", ")}</span>
-                      {" "}is online-only — visit their website to shop.
-                    </span>
-                  </div>
-                )}
-
-                {relevantStores.length === 0 ? (
+                {stores.length === 0 ? (
                   <div className="py-8 text-center text-sm text-mystyle-muted">
                     <Store className="mx-auto mb-2 h-8 w-8 opacity-30" />
-                    <p>All retailers for this outfit are online-only.</p>
-                    <p className="mt-1 text-xs">Visit their websites to check availability.</p>
+                    <p>No stores found within 10 miles.</p>
+                    <p className="mt-1 text-xs">Try a different location or check online.</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {relevantStores.map((store, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-3 rounded-xl border border-mystyle-stone bg-mystyle-cream/30 p-3"
-                      >
-                        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-mystyle-dark text-white text-xs font-bold">
-                          {store.retailer.charAt(0)}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <p className="text-sm font-semibold text-mystyle-dark">{store.name}</p>
-                            {store.inStock ? (
-                              <span className="rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] font-medium text-emerald-600">
-                                In stock
-                              </span>
-                            ) : (
-                              <span className="rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-600">
-                                Check in-store
-                              </span>
-                            )}
+                    {stores.map((store, i) => (
+                      <div key={i} className="rounded-xl border border-mystyle-stone bg-mystyle-cream/30 p-3">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-start gap-2.5">
+                            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-mystyle-dark text-white text-xs font-bold">
+                              {store.retailer.charAt(0)}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-sm font-semibold text-mystyle-dark">{store.name}</p>
+                              <p className="text-xs text-mystyle-muted">{store.address}</p>
+                              <div className="mt-1 flex flex-wrap items-center gap-2">
+                                <span className="text-[11px] font-semibold text-mystyle-accent">
+                                  {store.distance}
+                                </span>
+                                {store.openNow !== null && (
+                                  <span className={`text-[11px] font-medium ${store.openNow ? "text-emerald-600" : "text-red-500"}`}>
+                                    {store.openNow ? "Open now" : "Closed"}
+                                  </span>
+                                )}
+                                {store.rating && (
+                                  <span className="flex items-center gap-0.5 text-[11px] text-mystyle-muted">
+                                    <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
+                                    {store.rating}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                          <p className="text-xs text-mystyle-muted">{store.address}, {store.neighborhood}</p>
-                          <div className="mt-1.5 flex items-center gap-3">
-                            <span className="text-[11px] font-semibold text-mystyle-accent">{store.distance}</span>
-                            <span className="flex items-center gap-1 text-[11px] text-mystyle-muted">
-                              <Clock className="h-3 w-3" />
-                              {store.hours}
-                            </span>
-                          </div>
+                          <a
+                            href={store.mapsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-shrink-0 flex items-center gap-1 rounded-lg border border-mystyle-stone bg-white px-2.5 py-1.5 text-[11px] font-medium text-mystyle-dark hover:bg-mystyle-stone/40 transition-all"
+                          >
+                            <MapPin className="h-3 w-3" />
+                            Directions
+                          </a>
                         </div>
                       </div>
                     ))}
@@ -241,7 +207,7 @@ export function StoreLocator({ open, onClose, retailers }: StoreLocatorProps) {
                 )}
 
                 <p className="text-center text-[10px] text-mystyle-muted/60">
-                  Live inventory check coming soon · Distances are estimated based on your area
+                  Powered by Google Maps · In-store stock not guaranteed
                 </p>
 
                 <button

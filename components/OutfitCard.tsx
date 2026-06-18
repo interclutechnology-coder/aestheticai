@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, Bookmark, BookmarkCheck } from "lucide-react";
+import { TrendingUp, Bookmark, BookmarkCheck, Loader2, User } from "lucide-react";
 import { toast } from "sonner";
 import type { Outfit } from "@/types";
 import { saveOutfit, removeOutfit, isOutfitSaved } from "@/lib/storage";
+import { useOutfitStore } from "@/store/outfitStore";
 import { ProductCollage } from "./ProductCollage";
 import { OutfitModal } from "./OutfitModal";
 
@@ -19,6 +20,45 @@ interface OutfitCardProps {
 export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps) {
   const [detailOpen, setDetailOpen] = useState(false);
   const [saved, setSaved] = useState(() => isOutfitSaved(outfit.outfitId));
+  const [tryOnUrl, setTryOnUrl] = useState<string | null>(null);
+  const [tryOnLoading, setTryOnLoading] = useState(false);
+
+  const { userPhotoUrl } = useOutfitStore();
+
+  // Get the primary garment image for try-on (top item)
+  const primaryGarment = outfit.items.top ?? outfit.items.bottom ?? outfit.items.shoes;
+
+  useEffect(() => {
+    if (!userPhotoUrl || !primaryGarment?.imageUrl) return;
+    if (tryOnUrl || tryOnLoading) return;
+
+    // Check if image URL looks real (not a placeholder color)
+    if (!primaryGarment.imageUrl.startsWith("http")) return;
+
+    const generate = async () => {
+      setTryOnLoading(true);
+      try {
+        const res = await fetch("/api/tryon", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userPhotoUrl,
+            garmentImageUrl: primaryGarment.imageUrl,
+            category: primaryGarment.category,
+          }),
+        });
+        const data = await res.json();
+        if (data.imageUrl) setTryOnUrl(data.imageUrl);
+      } catch {
+        // Silently fail — fall back to product collage
+      } finally {
+        setTryOnLoading(false);
+      }
+    };
+
+    generate();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userPhotoUrl, primaryGarment?.imageUrl]);
 
   const handleSave = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -51,7 +91,15 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
           </div>
         )}
 
-        {/* Save outfit button */}
+        {/* Try-on badge — shows when user photo is active */}
+        {userPhotoUrl && (
+          <div className="absolute left-3 bottom-14 z-10 flex items-center gap-1 rounded-full bg-mystyle-accent/90 px-2 py-0.5 text-[9px] font-bold text-white shadow backdrop-blur-sm">
+            <User className="h-2.5 w-2.5" />
+            {tryOnLoading ? "Styling…" : tryOnUrl ? "You in this" : "Try-on ready"}
+          </div>
+        )}
+
+        {/* Save button */}
         <button
           type="button"
           onClick={handleSave}
@@ -65,12 +113,30 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
           )}
         </button>
 
-        {/* Square collage — Pinterest style */}
-        <div className="aspect-square w-full overflow-hidden bg-mystyle-stone/20">
-          <ProductCollage items={outfit.items} size="lg" className="h-full w-full rounded-none" />
+        {/* Square image area */}
+        <div className="aspect-square w-full overflow-hidden bg-mystyle-stone/20 relative">
+          {tryOnLoading && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-mystyle-dark/30 backdrop-blur-sm">
+              <Loader2 className="h-6 w-6 animate-spin text-white mb-1" />
+              <p className="text-[10px] text-white font-medium">Styling you…</p>
+            </div>
+          )}
+
+          {tryOnUrl ? (
+            // Show try-on result (user wearing the outfit)
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={tryOnUrl}
+              alt={`You wearing ${outfit.title}`}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            // Fall back to product collage
+            <ProductCollage items={outfit.items} size="lg" className="h-full w-full rounded-none" />
+          )}
         </div>
 
-        {/* Bottom strip — name + retailer only, NO price */}
+        {/* Bottom strip — name + retailers, NO price */}
         <div className="p-3.5">
           <h3 className="text-sm font-semibold text-mystyle-dark leading-tight line-clamp-1">
             {outfit.title}
@@ -89,6 +155,7 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
         open={detailOpen}
         onClose={() => setDetailOpen(false)}
         onSaveChange={onSaveChange}
+        tryOnUrl={tryOnUrl}
       />
     </>
   );

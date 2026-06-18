@@ -18,6 +18,7 @@ interface OutfitModalProps {
   open: boolean;
   onClose: () => void;
   onSaveChange?: () => void;
+  tryOnUrl?: string | null;
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -201,7 +202,7 @@ function FlatLayView({ outfit }: { outfit: Outfit }) {
   );
 }
 
-export function OutfitModal({ outfit, open, onClose, onSaveChange }: OutfitModalProps) {
+export function OutfitModal({ outfit, open, onClose, onSaveChange, tryOnUrl }: OutfitModalProps) {
   const [storeLocatorOpen, setStoreLocatorOpen] = useState(false);
 
   const itemEntries = (
@@ -234,8 +235,25 @@ export function OutfitModal({ outfit, open, onClose, onSaveChange }: OutfitModal
               </Dialog.Close>
             </div>
 
-            {/* Fashion flat-lay (model-inspired view) */}
-            <FlatLayView outfit={outfit} />
+            {/* Try-on result OR fashion flat-lay */}
+            {tryOnUrl ? (
+              <div className="bg-mystyle-cream/50 px-5 py-4">
+                <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-mystyle-muted">
+                  You in this outfit
+                </p>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={tryOnUrl}
+                  alt="Virtual try-on"
+                  className="w-full max-h-72 object-contain rounded-xl shadow-sm"
+                />
+                <p className="mt-2 text-[10px] italic text-mystyle-muted/60">
+                  ✦ AI-generated try-on — results are approximate
+                </p>
+              </div>
+            ) : (
+              <FlatLayView outfit={outfit} />
+            )}
 
             {/* Items header */}
             <div className="px-5 pt-4 pb-1">
