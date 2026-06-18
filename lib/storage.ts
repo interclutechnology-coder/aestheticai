@@ -1,6 +1,8 @@
 import type { Outfit, WaitlistEntry } from "@/types";
+import type { Product } from "@/types";
 
 const SAVED_OUTFITS_KEY = "mystyle_saved_outfits";
+const SAVED_ITEMS_KEY = "mystyle_saved_items";
 const WAITLIST_KEY = "mystyle_waitlist";
 const GENERATION_CACHE_KEY = "mystyle_last_generation";
 
@@ -19,12 +21,8 @@ export function getSavedOutfits(): Outfit[] {
 export function saveOutfit(outfit: Outfit): void {
   const outfits = getSavedOutfits();
   const existing = outfits.findIndex((o) => o.outfitId === outfit.outfitId);
-  if (existing !== -1) return; // already saved
-
-  const withTimestamp: Outfit = {
-    ...outfit,
-    savedAt: new Date().toISOString(),
-  };
+  if (existing !== -1) return;
+  const withTimestamp: Outfit = { ...outfit, savedAt: new Date().toISOString() };
   outfits.unshift(withTimestamp);
   localStorage.setItem(SAVED_OUTFITS_KEY, JSON.stringify(outfits));
 }
@@ -36,6 +34,34 @@ export function removeOutfit(outfitId: string): void {
 
 export function isOutfitSaved(outfitId: string): boolean {
   return getSavedOutfits().some((o) => o.outfitId === outfitId);
+}
+
+// ─── Saved Individual Items ──────────────────────────────────────────────────
+
+export function getSavedItems(): Product[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(SAVED_ITEMS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveItem(item: Product): void {
+  const items = getSavedItems();
+  if (items.some((i) => i.id === item.id)) return;
+  items.unshift(item);
+  localStorage.setItem(SAVED_ITEMS_KEY, JSON.stringify(items));
+}
+
+export function removeItem(itemId: string): void {
+  const items = getSavedItems().filter((i) => i.id !== itemId);
+  localStorage.setItem(SAVED_ITEMS_KEY, JSON.stringify(items));
+}
+
+export function isItemSaved(itemId: string): boolean {
+  return getSavedItems().some((i) => i.id === itemId);
 }
 
 // ─── Waitlist ────────────────────────────────────────────────────────────────
@@ -53,7 +79,7 @@ export function getWaitlistEmails(): WaitlistEntry[] {
 export function addToWaitlist(email: string): boolean {
   const entries = getWaitlistEmails();
   if (entries.some((e) => e.email.toLowerCase() === email.toLowerCase())) {
-    return false; // already on list
+    return false;
   }
   entries.push({ email, addedAt: new Date().toISOString() });
   localStorage.setItem(WAITLIST_KEY, JSON.stringify(entries));

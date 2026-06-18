@@ -3,10 +3,10 @@
 import { useEffect, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { RefreshCw, Wand2, SlidersHorizontal, Sparkles, AlertCircle } from "lucide-react";
+import { RefreshCw, Wand2, Sparkles, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useOutfitStore } from "@/store/outfitStore";
-import { SwipeDeck } from "@/components/SwipeDeck";
+import { OutfitCard } from "@/components/OutfitCard";
 import { SkeletonRow } from "@/components/SkeletonCard";
 import { FiltersDrawer } from "@/components/FiltersDrawer";
 import { formatPrice } from "@/lib/utils";
@@ -67,8 +67,7 @@ export default function ResultsPage() {
           description: `Based on: "${effectivePrompt}"`,
         });
       } catch (err) {
-        const msg =
-          err instanceof Error ? err.message : "Something went wrong";
+        const msg = err instanceof Error ? err.message : "Something went wrong";
         setError(msg);
         toast.error("Generation failed", { description: msg });
       } finally {
@@ -78,7 +77,6 @@ export default function ResultsPage() {
     [router, setLoading, setOutfits]
   );
 
-  // Auto-generate on mount if we have a prompt but no outfits
   useEffect(() => {
     if (prompt && (outfits.length === 0 || isLoading)) {
       generate(prompt, filters);
@@ -86,19 +84,19 @@ export default function ResultsPage() {
       router.push("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // only on mount
+  }, []);
 
   const hasResults = outfits.length > 0;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 pb-14 pt-6 sm:px-6">
+    <div className="mx-auto max-w-6xl px-4 pb-16 pt-6 sm:px-6">
       {/* Top bar */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-emerald-500" />
             <p className="text-xs font-semibold uppercase tracking-widest text-mystyle-muted">
-              Results
+              Generated
             </p>
           </div>
           <h1 className="mt-1 text-xl font-bold text-mystyle-dark line-clamp-1">
@@ -106,10 +104,7 @@ export default function ResultsPage() {
           </h1>
           <p className="mt-0.5 text-xs text-mystyle-muted">
             Budget: {formatPrice(filters.budgetMin)}–{formatPrice(filters.budgetMax)}
-            {filters.retailers.length > 0 && (
-              <> · {filters.retailers.join(", ")}</>
-            )}
-            {!filters.mixRetailers && " · Single retailer"}
+            {filters.retailers.length > 0 && <> · {filters.retailers.join(", ")}</>}
           </p>
         </div>
 
@@ -141,6 +136,7 @@ export default function ResultsPage() {
 
       {/* Content */}
       <AnimatePresence mode="wait">
+        {/* Loading state */}
         {isLoading && (
           <motion.div
             key="loading"
@@ -148,7 +144,6 @@ export default function ResultsPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Loading header */}
             <div className="mb-8 rounded-2xl border border-mystyle-stone bg-white p-5">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-mystyle-dark">
@@ -156,14 +151,13 @@ export default function ResultsPage() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-mystyle-dark">
-                    Building your outfits…
+                    Curating your looks…
                   </p>
                   <p className="text-xs text-mystyle-muted">
                     Analyzing inventory · Matching style tags · Optimizing color harmony
                   </p>
                 </div>
               </div>
-              {/* Fake progress bar */}
               <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-mystyle-stone">
                 <motion.div
                   className="h-full rounded-full bg-mystyle-accent"
@@ -177,6 +171,7 @@ export default function ResultsPage() {
           </motion.div>
         )}
 
+        {/* Error state */}
         {!isLoading && error && (
           <motion.div
             key="error"
@@ -212,16 +207,41 @@ export default function ResultsPage() {
           </motion.div>
         )}
 
+        {/* Pinterest grid results */}
         {!isLoading && !error && hasResults && (
           <motion.div
             key="results"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
           >
-            <SwipeDeck
-              outfits={outfits}
-              onSaveChange={() => setSaveVersion((v) => v + 1)}
-            />
+            {/* Count + hint */}
+            <div className="mb-5 flex items-center justify-between">
+              <p className="text-sm text-mystyle-muted">
+                <span className="font-semibold text-mystyle-dark">{outfits.length} looks</span>
+                {" "}generated · scroll to explore
+              </p>
+              <p className="text-xs text-mystyle-muted/60 hidden sm:block">
+                Tap any card to see pieces &amp; prices
+              </p>
+            </div>
+
+            {/* 3-column Pinterest grid */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {outfits.map((outfit, i) => (
+                <OutfitCard
+                  key={outfit.outfitId}
+                  outfit={outfit}
+                  index={i}
+                  onSaveChange={() => setSaveVersion((v) => v + 1)}
+                />
+              ))}
+            </div>
+
+            {/* AI disclaimer — single line at bottom of page */}
+            <p className="mt-10 text-center text-[11px] text-mystyle-muted/50 max-w-lg mx-auto leading-relaxed">
+              ✦ Outfits are AI-generated style suggestions. Items are sourced from real retailers but may differ from exact website listings. Always verify availability directly with the retailer. Not affiliated with or endorsed by any brands shown.
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
