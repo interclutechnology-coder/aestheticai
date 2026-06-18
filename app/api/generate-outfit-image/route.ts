@@ -1,12 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { createServerSupabase } from "@/lib/supabase-server";
+import Replicate from "replicate";
+
+const replicate = new Replicate({ auth: process.env.REPLICATE_API_KEY });
+
+function replicateUrl(output: unknown): string | null {
+  if (!output) return null;
+  const arr = Array.isArray(output) ? output : [output];
+  const val = arr[0];
+  if (!val) return null;
+  // Replicate FileOutput objects have a .url() method; plain strings work directly
+  if (typeof val === "object" && "url" in val && typeof (val as { url: unknown }).url === "function") {
+    return String((val as { url: () => unknown }).url());
+  }
+  const str = String(val);
+  return str.startsWith("http") ? str : null;
+}
 
 export async function POST(req: NextRequest) {
   try {
     const { outfitId, items, title, reasoning } = await req.json();
-    const apiKey = process.env.GOOGLE_AI_API_KEY;
-    if (!apiKey) return NextResponse.json({ imageUrl: null }, { status: 500 });
+
+    if (!process.env.REPLICATE_API_KEY) {
+      return NextResponse.json({ imageUrl: null, garmentImageUrl: null }, { status: 500 });
+    }
 
     const top = items?.top;
     const bottom = items?.bottom;
@@ -15,73 +31,68 @@ export async function POST(req: NextRequest) {
     const accessory = items?.accessory;
 
     if (!top || !bottom || !shoes) {
-      return NextResponse.json({ imageUrl: null }, { status: 400 });
+      return NextResponse.json({ imageUrl: null, garmentImageUrl: null }, { status: 400 });
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-
-    // Gemini 2.0 Flash with image output
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
-
-    const itemList = [
-      `Top: ${top.name} (${top.color}, ${top.retailer})`,
-      `Bottom: ${bottom.name} (${bottom.color}, ${bottom.retailer})`,
-      `Shoes: ${shoes.name} (${shoes.retailer})`,
-      outerwear ? `Outerwear: ${outerwear.name}` : null,
-      accessory ? `Accessory: ${accessory.name}` : null,
+    const itemDesc = [
+      `${top.name}${top.color ? ` in ${top.color}` : ""}`,
+      `${bottom.name}${bottom.color ? ` in ${bottom.color}` : ""}`,
+      shoes.name,
+      outerwear?.name,
+      accessory?.name,
     ]
       .filter(Boolean)
-      .join("\n");
+      .join(", ");
 
-    const prompt = `Create a professional fashion flat-lay photograph for a styled outfit called "${title}".
+    // Prompt 1: Full outfit flat-lay (for card display)
+    const flatLayPrompt =
+      `Professional fashion photography flat lay. ${itemDesc}. ` +
+      `Styled as: ${title}. ${reasoning || ""}. ` +
+      `Clothing items beautifully arranged on clean white marble surface, ` +
+      `soft overhead natural lighting, editorial fashion magazine quality, ` +
+      `sharp focus, photorealistic, no people, no mannequins.`;
 
-Clothing items to show:
-${itemList}
+    // Prompt 2: Single garment image (for virtual try-on via IDM-VTON)
+    const garmentPrompt =
+      `Product photography of ${top.name}${top.color ? ` in ${top.color}` : ""}. ` +
+      `Single clothing item, displayed flat on pure white background, ` +
+      `front view, commercial clothing product photo, ` +
+      `no person, no mannequin, clean white background only.`;
 
-Style vibe: ${reasoning}
+    console.log(`[generate-outfit-image] Generating images for ${outfitId}`);
 
-Instructions:
-- Arrange all items on a clean white or light marble surface
-- Fashion editorial flat-lay composition (items laid flat, arranged artfully)
-- Soft natural lighting from above
-- High quality product photography
-- No people, no mannequins — just the clothing items
-- Ensure all items are clearly visible
-- Style should match the mood: ${title}`;
+    // Generate both images in parallel using FLUX Schnell
+    const [flatLayOutput, garmentOutput] = await Promise.all([
+      replicate.run("black-forest-labs/flux-schnell", {
+        input: {
+          prompt: flatLayPrompt,
+          aspect_ratio: "1:1",
+          output_format: "webp",
+          output_quality: 85,
+          num_outputs: 1,
+          go_fast: true,
+        },
+      }),
+      replicate.run("black-forest-labs/flux-schnell", {
+        input: {
+          prompt: garmentPrompt,
+          aspect_ratio: "1:1",
+          output_format: "webp",
+          output_quality: 85,
+          num_outputs: 1,
+          go_fast: true,
+        },
+      }),
+    ]);
 
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      // @ts-expect-error responseModalities not yet in SDK types
-      generationConfig: { responseModalities: ["IMAGE"] },
-    });
+    const imageUrl = replicateUrl(flatLayOutput);
+    const garmentImageUrl = replicateUrl(garmentOutput);
 
-    const candidate = result.response.candidates?.[0];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const imagePart = candidate?.content?.parts?.find((p: any) => p.inlineData);
+    console.log(`[generate-outfit-image] Done — imageUrl=${!!imageUrl} garmentUrl=${!!garmentImageUrl}`);
 
-    if (!imagePart?.inlineData?.data) {
-      console.error("[generate-outfit-image] No image data in Gemini response");
-      return NextResponse.json({ imageUrl: null });
-    }
-
-    // Upload to Supabase Storage
-    const imageBuffer = Buffer.from(imagePart.inlineData.data, "base64");
-    const supabase = createServerSupabase();
-    const path = `outfits/${outfitId}-${Date.now()}.png`;
-
-    const { error: uploadError } = await supabase.storage
-      .from("tryon-results")
-      .upload(path, imageBuffer, { contentType: "image/png", upsert: true });
-
-    if (uploadError) {
-      console.error("[generate-outfit-image] Supabase upload error:", uploadError.message);
-      return NextResponse.json({ imageUrl: null });
-    }
-
-    const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/tryon-results/${path}`;
-    return NextResponse.json({ imageUrl });
+    return NextResponse.json({ imageUrl, garmentImageUrl });
   } catch (err) {
     console.error("[generate-outfit-image] Error:", err);
-    return NextResponse.json({ imageUrl: null });
+    return NextResponse.json({ imageUrl: null, garmentImageUrl: null });
   }
 }

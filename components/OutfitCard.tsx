@@ -20,18 +20,19 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
   const [detailOpen, setDetailOpen] = useState(false);
   const [saved, setSaved] = useState(() => isOutfitSaved(outfit.outfitId));
 
-  // AI-generated flat-lay image for this outfit
-  const [outfitImageUrl, setOutfitImageUrl] = useState<string | null>(null);
+  // AI-generated images for this outfit
+  const [outfitImageUrl, setOutfitImageUrl] = useState<string | null>(null);  // full flat-lay
+  const [garmentImageUrl, setGarmentImageUrl] = useState<string | null>(null); // single top item
   const [imageLoading, setImageLoading] = useState(false);
   const imageRequestedRef = useRef(false);
 
-  // Virtual try-on result (user photo + outfit garment image)
+  // Virtual try-on result
   const [tryOnUrl, setTryOnUrl] = useState<string | null>(null);
   const [tryOnLoading, setTryOnLoading] = useState(false);
 
   const { userPhotoUrl } = useOutfitStore();
 
-  // Step 1: Generate AI flat-lay image for this outfit
+  // Step 1: Generate AI images for this outfit (flat-lay + garment)
   useEffect(() => {
     if (imageRequestedRef.current) return;
     imageRequestedRef.current = true;
@@ -50,15 +51,16 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
       .then((r) => r.json())
       .then((data) => {
         if (data.imageUrl) setOutfitImageUrl(data.imageUrl);
+        if (data.garmentImageUrl) setGarmentImageUrl(data.garmentImageUrl);
       })
       .catch(() => {})
       .finally(() => setImageLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [outfit.outfitId]);
 
-  // Step 2: Virtual try-on — runs once we have both the user photo AND the AI outfit image
+  // Step 2: Virtual try-on — uses the clean single-garment image (not full flat-lay)
   useEffect(() => {
-    if (!userPhotoUrl || !outfitImageUrl) return;
+    if (!userPhotoUrl || !garmentImageUrl) return;
     if (tryOnUrl || tryOnLoading) return;
 
     const generate = async () => {
@@ -69,14 +71,14 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             userPhotoUrl,
-            garmentImageUrl: outfitImageUrl,
-            category: outfit.items.top?.category ?? "top",
+            garmentImageUrl,
+            garmentDescription: outfit.items.top?.name ?? "upper body clothing item",
           }),
         });
         const data = await res.json();
         if (data.imageUrl) setTryOnUrl(data.imageUrl);
       } catch {
-        // Silently fail — fall back to outfit image
+        // Silently fail
       } finally {
         setTryOnLoading(false);
       }
@@ -84,7 +86,7 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
 
     generate();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userPhotoUrl, outfitImageUrl]);
+  }, [userPhotoUrl, garmentImageUrl]);
 
   const handleSave = (e: React.MouseEvent) => {
     e.stopPropagation();

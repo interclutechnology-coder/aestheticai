@@ -5,20 +5,20 @@ const replicate = new Replicate({ auth: process.env.REPLICATE_API_KEY });
 
 export async function POST(req: NextRequest) {
   try {
-    const { userPhotoUrl, garmentImageUrl, category } = await req.json();
+    const { userPhotoUrl, garmentImageUrl, garmentDescription } = await req.json();
 
     if (!userPhotoUrl || !garmentImageUrl) {
       return NextResponse.json({ error: "Missing photo or garment image" }, { status: 400 });
     }
 
-    // IDM-VTON: state-of-the-art virtual try-on model
+    // IDM-VTON: virtual try-on — expects a clean single-garment photo
     const output = await replicate.run(
       "cuuupid/idm-vton:906425dbca90663ff5427624839572cc56ea7d380343d13e2a4c4b09d3f0c30f",
       {
         input: {
           human_img: userPhotoUrl,
           garm_img: garmentImageUrl,
-          garment_des: `${category} clothing item`,
+          garment_des: garmentDescription || "upper body clothing item",
           is_checked: true,
           is_checked_crop: false,
           denoise_steps: 30,
