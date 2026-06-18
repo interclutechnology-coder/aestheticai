@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import type { Outfit } from "@/types";
 import { saveOutfit, removeOutfit, isOutfitSaved } from "@/lib/storage";
 import { useOutfitStore } from "@/store/outfitStore";
-import { ProductCollage } from "./ProductCollage";
 import { OutfitModal } from "./OutfitModal";
 
 interface OutfitCardProps {
@@ -20,23 +19,22 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
   const [detailOpen, setDetailOpen] = useState(false);
   const [saved, setSaved] = useState(() => isOutfitSaved(outfit.outfitId));
 
-  // AI-generated images for this outfit
-  const [outfitImageUrl, setOutfitImageUrl] = useState<string | null>(null);  // full flat-lay
-  const [garmentImageUrl, setGarmentImageUrl] = useState<string | null>(null); // single top item
-  const [imageLoading, setImageLoading] = useState(false);
-  const imageRequestedRef = useRef(false);
+  // AI-generated images
+  const [outfitImageUrl, setOutfitImageUrl] = useState<string | null>(null);
+  const [garmentImageUrl, setGarmentImageUrl] = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(true);
+  const requestedRef = useRef(false);
 
-  // Virtual try-on result
+  // Virtual try-on
   const [tryOnUrl, setTryOnUrl] = useState<string | null>(null);
   const [tryOnLoading, setTryOnLoading] = useState(false);
 
   const { userPhotoUrl } = useOutfitStore();
 
-  // Step 1: Generate AI images for this outfit (flat-lay + garment)
+  // Step 1 — generate AI outfit photo + garment product shot
   useEffect(() => {
-    if (imageRequestedRef.current) return;
-    imageRequestedRef.current = true;
-    setImageLoading(true);
+    if (requestedRef.current) return;
+    requestedRef.current = true;
 
     fetch("/api/generate-outfit-image", {
       method: "POST",
@@ -53,38 +51,30 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
         if (data.imageUrl) setOutfitImageUrl(data.imageUrl);
         if (data.garmentImageUrl) setGarmentImageUrl(data.garmentImageUrl);
       })
-      .catch(() => {})
+      .catch((err) => console.error("[OutfitCard] image gen failed:", err))
       .finally(() => setImageLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [outfit.outfitId]);
 
-  // Step 2: Virtual try-on — uses the clean single-garment image (not full flat-lay)
+  // Step 2 — virtual try-on once we have both user photo + garment image
   useEffect(() => {
     if (!userPhotoUrl || !garmentImageUrl) return;
     if (tryOnUrl || tryOnLoading) return;
 
-    const generate = async () => {
-      setTryOnLoading(true);
-      try {
-        const res = await fetch("/api/tryon", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userPhotoUrl,
-            garmentImageUrl,
-            garmentDescription: outfit.items.top?.name ?? "upper body clothing item",
-          }),
-        });
-        const data = await res.json();
-        if (data.imageUrl) setTryOnUrl(data.imageUrl);
-      } catch {
-        // Silently fail
-      } finally {
-        setTryOnLoading(false);
-      }
-    };
-
-    generate();
+    setTryOnLoading(true);
+    fetch("/api/tryon", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userPhotoUrl,
+        garmentImageUrl,
+        garmentDescription: outfit.items.top?.name ?? "clothing item",
+      }),
+    })
+      .then((r) => r.json())
+      .then((data) => { if (data.imageUrl) setTryOnUrl(data.imageUrl); })
+      .catch(() => {})
+      .finally(() => setTryOnLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userPhotoUrl, garmentImageUrl]);
 
@@ -102,9 +92,8 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
     onSaveChange?.();
   };
 
-  // What to show in the card image area (priority order)
-  const cardImageUrl = tryOnUrl ?? outfitImageUrl ?? null;
-  const isGenerating = imageLoading || tryOnLoading;
+  // Priority: try-on photo > outfit photo > loading
+  const displayUrl = tryOnUrl ?? outfitImageUrl ?? null;
 
   return (
     <>
@@ -123,14 +112,6 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
           </div>
         )}
 
-        {/* Status badge */}
-        {userPhotoUrl && (
-          <div className="absolute left-3 bottom-14 z-10 flex items-center gap-1 rounded-full bg-mystyle-accent/90 px-2 py-0.5 text-[9px] font-bold text-white shadow backdrop-blur-sm">
-            <User className="h-2.5 w-2.5" />
-            {tryOnLoading ? "Styling you…" : tryOnUrl ? "You in this" : "Try-on pending"}
-          </div>
-        )}
-
         {/* Save button */}
         <button
           type="button"
@@ -145,42 +126,46 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
           )}
         </button>
 
-        {/* Portrait image area — 2:3 ratio shows full-body model */}
-        <div className="aspect-[2/3] w-full overflow-hidden bg-mystyle-stone/20 relative">
+        {/* Image area — portrait ratio for full-body model */}
+        <div className="aspect-[2/3] w-full overflow-hidden relative bg-mystyle-cream/40">
 
-          {/* Loading overlay */}
-          {isGenerating && !cardImageUrl && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-mystyle-cream/80 backdrop-blur-sm">
-              <Loader2 className="h-6 w-6 animate-spin text-mystyle-accent mb-2" />
-              <p className="text-[11px] font-medium text-mystyle-muted">
-                {tryOnLoading ? "Styling you…" : "Generating look…"}
-              </p>
-            </div>
-          )}
-
-          {cardImageUrl ? (
-            // Show AI-generated outfit image or try-on result
+          {displayUrl ? (
+            // AI-generated model photo or try-on result
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={cardImageUrl}
+              src={displayUrl}
               alt={tryOnUrl ? `You wearing ${outfit.title}` : outfit.title}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            // Fallback: gradient collage while image generates
-            <ProductCollage items={outfit.items} size="lg" className="h-full w-full rounded-none" />
+            // Loading state — NO tiles/panels, just spinner
+            <div className="h-full w-full flex flex-col items-center justify-center gap-3">
+              <div className="relative">
+                <div className="h-14 w-14 rounded-full border-2 border-mystyle-stone/30 bg-mystyle-stone/10" />
+                <Loader2 className="absolute inset-0 m-auto h-7 w-7 animate-spin text-mystyle-accent" />
+              </div>
+              <div className="text-center px-4">
+                <p className="text-xs font-semibold text-mystyle-dark">Generating look…</p>
+                <p className="text-[10px] text-mystyle-muted mt-0.5">AI is styling your outfit</p>
+              </div>
+            </div>
           )}
 
-          {/* "AI Look" badge when image has generated but no try-on */}
-          {outfitImageUrl && !tryOnUrl && !isGenerating && (
-            <div className="absolute left-3 bottom-14 z-10 flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[9px] font-bold text-white shadow backdrop-blur-sm">
-              <Sparkles className="h-2.5 w-2.5" />
-              AI Look
+          {/* Status badge overlay on image */}
+          {displayUrl && (
+            <div className="absolute bottom-3 left-3 z-10 flex items-center gap-1 rounded-full bg-black/50 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-sm">
+              {tryOnUrl ? (
+                <><User className="h-3 w-3" /> You in this</>
+              ) : tryOnLoading ? (
+                <><Loader2 className="h-3 w-3 animate-spin" /> Styling you…</>
+              ) : (
+                <><Sparkles className="h-3 w-3" /> AI Look</>
+              )}
             </div>
           )}
         </div>
 
-        {/* Bottom strip */}
+        {/* Bottom info strip */}
         <div className="p-3.5">
           <h3 className="text-sm font-semibold text-mystyle-dark leading-tight line-clamp-1">
             {outfit.title}

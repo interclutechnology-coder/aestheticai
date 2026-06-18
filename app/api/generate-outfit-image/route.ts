@@ -1,22 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 
-// Extend Vercel function timeout — FLUX Schnell takes 3–8s per image
 export const maxDuration = 60;
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_KEY });
 
-function extractUrl(output: unknown): string | null {
-  const arr = Array.isArray(output) ? output : [output];
-  const val = arr[0];
-  if (!val) return null;
-  // Replicate FileOutput objects expose .url() method
-  if (typeof val === "object" && val !== null && "url" in val) {
-    const fn = (val as { url: unknown }).url;
-    return typeof fn === "function" ? String((fn as () => unknown)()) : String(val);
+// Replicate SDK returns FileOutput objects (extends ReadableStream) — not plain strings.
+// FileOutput.url() returns a URL object whose .href is the actual string we need.
+function getUrl(output: unknown): string | null {
+  if (!output) return null;
+  const item = Array.isArray(output) ? output[0] : output;
+  if (!item) return null;
+
+  // Plain string (older SDK versions)
+  if (typeof item === "string") return item.startsWith("http") ? item : null;
+
+  // FileOutput from replicate >=0.25 — has .url() returning a URL object
+  if (typeof item === "object" && item !== null) {
+    const obj = item as Record<string, unknown>;
+    if (typeof obj.url === "function") {
+      try {
+        const urlResult = (obj.url as () => unknown)();
+        // URL object → need .href
+        if (urlResult && typeof urlResult === "object" && "href" in urlResult) {
+          return String((urlResult as { href: string }).href);
+        }
+        const s = String(urlResult);
+        return s.startsWith("http") ? s : null;
+      } catch { /* fall through */ }
+    }
+    // Some versions expose .href directly
+    if (typeof obj.href === "string") return obj.href;
   }
-  const str = String(val);
-  return str.startsWith("http") ? str : null;
+  return null;
 }
 
 export async function POST(req: NextRequest) {
@@ -24,13 +40,12 @@ export async function POST(req: NextRequest) {
     const { outfitId, items, title, reasoning } = await req.json();
 
     if (!process.env.REPLICATE_API_KEY) {
-      console.error("[generate-outfit-image] REPLICATE_API_KEY not set");
       return NextResponse.json({ imageUrl: null, garmentImageUrl: null }, { status: 500 });
     }
 
-    const top = items?.top;
-    const bottom = items?.bottom;
-    const shoes = items?.shoes;
+    const top      = items?.top;
+    const bottom   = items?.bottom;
+    const shoes    = items?.shoes;
     const outerwear = items?.outerwear;
     const accessory = items?.accessory;
 
@@ -38,15 +53,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ imageUrl: null, garmentImageUrl: null }, { status: 400 });
     }
 
-    // Determine model gender
-    const modelType =
-      top.gender === "male"
-        ? "male fashion model"
-        : top.gender === "female"
-        ? "female fashion model"
-        : "fashion model";
+    const genderWord =
+      top.gender === "male" ? "male" : top.gender === "female" ? "female" : "fashion";
 
-    // Full outfit description
     const outfitDesc = [
       `${top.name}${top.color ? ` in ${top.color}` : ""}`,
       `${bottom.name}${bottom.color ? ` in ${bottom.color}` : ""}`,
@@ -57,28 +66,28 @@ export async function POST(req: NextRequest) {
       .filter(Boolean)
       .join(", ");
 
-    // Prompt 1: Fashion model wearing the complete outfit
-    const modelPrompt =
-      `Professional fashion editorial photograph. Stylish ${modelType} wearing ${outfitDesc}. ` +
+    // Image 1: full-body model wearing the complete outfit
+    const outfitPrompt =
+      `Professional high-fashion editorial photograph. ` +
+      `Stylish ${genderWord} model wearing ${outfitDesc}. ` +
       `${title} aesthetic. ${reasoning ? reasoning + ". " : ""}` +
-      `Full body shot, clean white studio background, sharp focus, ` +
-      `Vogue magazine quality, photorealistic, 4k fashion photography.`;
+      `Full body shot from head to toe, clean white studio background, ` +
+      `sharp focus, Vogue magazine quality, photorealistic, 4k.`;
 
-    // Prompt 2: Clean product shot of the top item only (for IDM-VTON virtual try-on)
+    // Image 2: clean product shot of just the top (for IDM-VTON virtual try-on)
     const garmentPrompt =
-      `Commercial product photograph. ` +
-      `${top.name}${top.color ? ` in ${top.color}` : ""} clothing item, ` +
-      `displayed flat on a pure white background, front view, ` +
-      `single garment only, no person, no mannequin, clean studio product photo.`;
+      `Commercial fashion product photo. ` +
+      `${top.name}${top.color ? ` in ${top.color}` : ""}, ` +
+      `single garment displayed flat on pure white background, ` +
+      `front view, no person, no mannequin.`;
 
-    console.log(`[generate-outfit-image] Generating for outfit "${title}" (${outfitId})`);
+    console.log(`[generate-outfit-image] Starting for "${title}" (${outfitId})`);
 
-    // Run both in parallel — flux-schnell takes ~3–5s each
-    const [outfitOutput, garmentOutput] = await Promise.all([
+    const [outfitRaw, garmentRaw] = await Promise.all([
       replicate.run("black-forest-labs/flux-schnell", {
         input: {
-          prompt: modelPrompt,
-          aspect_ratio: "2:3",   // portrait — shows full body
+          prompt: outfitPrompt,
+          aspect_ratio: "2:3",
           output_format: "webp",
           output_quality: 90,
           num_outputs: 1,
@@ -95,11 +104,11 @@ export async function POST(req: NextRequest) {
       }),
     ]);
 
-    const imageUrl = extractUrl(outfitOutput);
-    const garmentImageUrl = extractUrl(garmentOutput);
+    const imageUrl     = getUrl(outfitRaw);
+    const garmentImageUrl = getUrl(garmentRaw);
 
     console.log(
-      `[generate-outfit-image] Done — outfit=${imageUrl ? "✓" : "✗"} garment=${garmentImageUrl ? "✓" : "✗"}`
+      `[generate-outfit-image] Done "${title}": outfit=${imageUrl?.slice(0, 60) ?? "null"}`
     );
 
     return NextResponse.json({ imageUrl, garmentImageUrl });
