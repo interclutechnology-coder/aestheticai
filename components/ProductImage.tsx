@@ -52,9 +52,10 @@ interface ProductImageProps {
   product: Product;
   className?: string;
   showLabel?: boolean;
+  showPrice?: boolean;
 }
 
-export function ProductImage({ product, className, showLabel = true }: ProductImageProps) {
+export function ProductImage({ product, className, showLabel = true, showPrice = false }: ProductImageProps) {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
 
@@ -120,13 +121,15 @@ export function ProductImage({ product, className, showLabel = true }: ProductIm
         </div>
       )}
 
-      {/* Price tag top-right */}
-      <div
-        className="absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold backdrop-blur-sm z-10"
-        style={{ background: `${from}CC`, color: textColor }}
-      >
-        ${product.price}
-      </div>
+      {/* Price tag — only shown explicitly (in modal item rows, not card collages) */}
+      {showPrice && (
+        <div
+          className="absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold backdrop-blur-sm z-10"
+          style={{ background: `${from}CC`, color: textColor }}
+        >
+          ${product.price}
+        </div>
+      )}
     </div>
   );
 }

@@ -29,14 +29,21 @@ export async function POST(req: NextRequest) {
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${apiKey}`
       );
       const geoData = await geoRes.json();
-      if (geoData.results?.[0]) {
-        const loc = (geoData.results[0] as GeocodeResult).geometry.location;
-        latitude = loc.lat;
-        longitude = loc.lng;
-        locationLabel = (geoData.results[0] as GeocodeResult).formatted_address;
-      } else {
-        return NextResponse.json({ error: "Could not find that zip code" }, { status: 400 });
+      console.log("[/api/stores] Geocode status:", geoData.status, "error_message:", geoData.error_message);
+
+      if (geoData.status === "REQUEST_DENIED") {
+        return NextResponse.json(
+          { error: `Google Maps API key issue: ${geoData.error_message || "REQUEST_DENIED"}. Enable Geocoding API in Google Cloud Console.` },
+          { status: 500 }
+        );
       }
+      if (geoData.status !== "OK" || !geoData.results?.[0]) {
+        return NextResponse.json({ error: `Could not find zip code "${zipCode}" — try a different one.` }, { status: 400 });
+      }
+      const loc = (geoData.results[0] as GeocodeResult).geometry.location;
+      latitude = loc.lat;
+      longitude = loc.lng;
+      locationLabel = (geoData.results[0] as GeocodeResult).formatted_address;
     }
 
     if (!latitude || !longitude) {
@@ -51,6 +58,12 @@ export async function POST(req: NextRequest) {
             `location=${latitude},${longitude}&radius=16000&type=clothing_store&keyword=${encodeURIComponent(retailer)}&key=${apiKey}`
         );
         const searchData = await searchRes.json();
+        console.log(`[/api/stores] Places search for "${retailer}": status=${searchData.status}, count=${searchData.results?.length ?? 0}`);
+
+        if (searchData.status === "REQUEST_DENIED") {
+          console.error("[/api/stores] Places API denied:", searchData.error_message);
+          return [];
+        }
 
         return (searchData.results as PlacesResult[] || []).slice(0, 2).map((place) => {
           // Calculate rough distance in miles

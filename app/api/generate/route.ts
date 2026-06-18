@@ -66,18 +66,17 @@ async function searchCategory(
   if (!res.ok) return [];
   const data = await res.json();
 
-  return (data.results ?? []).map((r: { title?: string; url?: string; content?: string }, i: number) => {
+  return (data.results ?? []).map((r: { title?: string; url?: string; content?: string }) => {
     const priceMatch = (r.content ?? "").match(/\$[\d,]+(?:\.\d{2})?/);
     const rawPrice = priceMatch ? parseFloat(priceMatch[0].replace(/[$,]/g, "")) : null;
     const price = rawPrice && rawPrice > 5 && rawPrice <= budgetMax ? rawPrice : Math.floor(budgetMax * 0.25 + Math.random() * budgetMax * 0.3);
-    const imageUrl = (data.images ?? [])[i] ?? (data.images ?? [])[0] ?? "";
 
     return {
       name: r.title ?? `${category} item`,
       url: r.url ?? "",
       price: Math.round(price * 100) / 100,
       retailer: detectRetailer(r.url ?? ""),
-      imageUrl,
+      imageUrl: "", // Tavily images are random web scrapes — use gradient fallback instead
       category,
     } as RawProduct;
   });
@@ -179,8 +178,8 @@ Rules:
 - outerwear and accessory are optional (omit them if they don't fit the look or budget)
 - totalPrice must equal sum of all item prices and stay within budget
 - Make each of the 8 outfits distinctly different from each other
-- For imageUrl: use the real product URLs from the search results above when available, otherwise use "" (empty string)
-- For url: use the real product page URLs from search results when available, otherwise use the retailer's homepage
+- imageUrl: always use "" (empty string) — the app will display a styled color gradient instead
+- For url: use the real product page URL from the search results above when available, otherwise use the retailer's homepage URL
 - Make titles creative and on-trend (e.g. "Quiet Luxury Edit", "Off-Duty Coastal", "Sharp Monday")
 - trending: set to true for 2-3 of the outfits that feel most current/viral`;
 
