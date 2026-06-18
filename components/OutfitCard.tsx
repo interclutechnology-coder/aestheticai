@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, Bookmark, BookmarkCheck, Loader2, User } from "lucide-react";
+import { TrendingUp, Bookmark, BookmarkCheck, Loader2, User, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import type { Outfit } from "@/types";
 import { saveOutfit, removeOutfit, isOutfitSaved } from "@/lib/storage";
@@ -14,26 +14,52 @@ interface OutfitCardProps {
   outfit: Outfit;
   index?: number;
   onSaveChange?: () => void;
-  showSwap?: boolean;
 }
 
 export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps) {
   const [detailOpen, setDetailOpen] = useState(false);
   const [saved, setSaved] = useState(() => isOutfitSaved(outfit.outfitId));
+
+  // AI-generated flat-lay image for this outfit
+  const [outfitImageUrl, setOutfitImageUrl] = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(false);
+  const imageRequestedRef = useRef(false);
+
+  // Virtual try-on result (user photo + outfit garment image)
   const [tryOnUrl, setTryOnUrl] = useState<string | null>(null);
   const [tryOnLoading, setTryOnLoading] = useState(false);
 
   const { userPhotoUrl } = useOutfitStore();
 
-  // Get the primary garment image for try-on (top item)
-  const primaryGarment = outfit.items.top ?? outfit.items.bottom ?? outfit.items.shoes;
-
+  // Step 1: Generate AI flat-lay image for this outfit
   useEffect(() => {
-    if (!userPhotoUrl || !primaryGarment?.imageUrl) return;
-    if (tryOnUrl || tryOnLoading) return;
+    if (imageRequestedRef.current) return;
+    imageRequestedRef.current = true;
+    setImageLoading(true);
 
-    // Check if image URL looks real (not a placeholder color)
-    if (!primaryGarment.imageUrl.startsWith("http")) return;
+    fetch("/api/generate-outfit-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        outfitId: outfit.outfitId,
+        items: outfit.items,
+        title: outfit.title,
+        reasoning: outfit.reasoning,
+      }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.imageUrl) setOutfitImageUrl(data.imageUrl);
+      })
+      .catch(() => {})
+      .finally(() => setImageLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [outfit.outfitId]);
+
+  // Step 2: Virtual try-on — runs once we have both the user photo AND the AI outfit image
+  useEffect(() => {
+    if (!userPhotoUrl || !outfitImageUrl) return;
+    if (tryOnUrl || tryOnLoading) return;
 
     const generate = async () => {
       setTryOnLoading(true);
@@ -43,14 +69,14 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             userPhotoUrl,
-            garmentImageUrl: primaryGarment.imageUrl,
-            category: primaryGarment.category,
+            garmentImageUrl: outfitImageUrl,
+            category: outfit.items.top?.category ?? "top",
           }),
         });
         const data = await res.json();
         if (data.imageUrl) setTryOnUrl(data.imageUrl);
       } catch {
-        // Silently fail — fall back to product collage
+        // Silently fail — fall back to outfit image
       } finally {
         setTryOnLoading(false);
       }
@@ -58,7 +84,7 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
 
     generate();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userPhotoUrl, primaryGarment?.imageUrl]);
+  }, [userPhotoUrl, outfitImageUrl]);
 
   const handleSave = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -73,6 +99,10 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
     }
     onSaveChange?.();
   };
+
+  // What to show in the card image area (priority order)
+  const cardImageUrl = tryOnUrl ?? outfitImageUrl ?? null;
+  const isGenerating = imageLoading || tryOnLoading;
 
   return (
     <>
@@ -91,11 +121,11 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
           </div>
         )}
 
-        {/* Try-on badge — shows when user photo is active */}
+        {/* Status badge */}
         {userPhotoUrl && (
           <div className="absolute left-3 bottom-14 z-10 flex items-center gap-1 rounded-full bg-mystyle-accent/90 px-2 py-0.5 text-[9px] font-bold text-white shadow backdrop-blur-sm">
             <User className="h-2.5 w-2.5" />
-            {tryOnLoading ? "Styling…" : tryOnUrl ? "You in this" : "Try-on ready"}
+            {tryOnLoading ? "Styling you…" : tryOnUrl ? "You in this" : "Try-on pending"}
           </div>
         )}
 
@@ -115,28 +145,40 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
 
         {/* Square image area */}
         <div className="aspect-square w-full overflow-hidden bg-mystyle-stone/20 relative">
-          {tryOnLoading && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-mystyle-dark/30 backdrop-blur-sm">
-              <Loader2 className="h-6 w-6 animate-spin text-white mb-1" />
-              <p className="text-[10px] text-white font-medium">Styling you…</p>
+
+          {/* Loading overlay */}
+          {isGenerating && !cardImageUrl && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-mystyle-cream/80 backdrop-blur-sm">
+              <Loader2 className="h-6 w-6 animate-spin text-mystyle-accent mb-2" />
+              <p className="text-[11px] font-medium text-mystyle-muted">
+                {tryOnLoading ? "Styling you…" : "Generating look…"}
+              </p>
             </div>
           )}
 
-          {tryOnUrl ? (
-            // Show try-on result (user wearing the outfit)
+          {cardImageUrl ? (
+            // Show AI-generated outfit image or try-on result
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={tryOnUrl}
-              alt={`You wearing ${outfit.title}`}
+              src={cardImageUrl}
+              alt={tryOnUrl ? `You wearing ${outfit.title}` : outfit.title}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            // Fall back to product collage
+            // Fallback: gradient collage while image generates
             <ProductCollage items={outfit.items} size="lg" className="h-full w-full rounded-none" />
+          )}
+
+          {/* "AI Look" badge when image has generated but no try-on */}
+          {outfitImageUrl && !tryOnUrl && !isGenerating && (
+            <div className="absolute left-3 bottom-14 z-10 flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[9px] font-bold text-white shadow backdrop-blur-sm">
+              <Sparkles className="h-2.5 w-2.5" />
+              AI Look
+            </div>
           )}
         </div>
 
-        {/* Bottom strip — name + retailers, NO price */}
+        {/* Bottom strip */}
         <div className="p-3.5">
           <h3 className="text-sm font-semibold text-mystyle-dark leading-tight line-clamp-1">
             {outfit.title}
@@ -156,6 +198,7 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
         onClose={() => setDetailOpen(false)}
         onSaveChange={onSaveChange}
         tryOnUrl={tryOnUrl}
+        outfitImageUrl={outfitImageUrl}
       />
     </>
   );

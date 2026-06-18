@@ -205,7 +205,7 @@ Rules:
       category: cat,
       retailer: String(item.retailer || "Fashion Retailer"),
       price: typeof item.price === "number" ? item.price : 30,
-      imageUrl: String(item.imageUrl || ""),
+      imageUrl: "", // always empty — cards use AI-generated image via /api/generate-outfit-image
       url: String(item.url || ""),
       color: String(item.color || "neutral"),
       colorFamily: COLOR_FAMILIES.has(String(item.colorFamily)) ? String(item.colorFamily) : "neutral",

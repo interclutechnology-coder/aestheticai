@@ -96,7 +96,7 @@ export function SwipeDeck({ outfits, onSaveChange }: SwipeDeckProps) {
                 <OutfitCard
                   outfit={outfits[currentIndex - 1]}
                   index={0}
-                  showSwap={false}
+                 
                 />
               </button>
             )}
@@ -117,7 +117,7 @@ export function SwipeDeck({ outfits, onSaveChange }: SwipeDeckProps) {
                     outfit={outfits[currentIndex]}
                     index={0}
                     onSaveChange={onSaveChange}
-                    showSwap
+                   
                   />
                 </motion.div>
               </AnimatePresence>
@@ -133,7 +133,7 @@ export function SwipeDeck({ outfits, onSaveChange }: SwipeDeckProps) {
                 <OutfitCard
                   outfit={outfits[currentIndex + 1]}
                   index={0}
-                  showSwap={false}
+                 
                 />
               </button>
             )}
@@ -189,7 +189,7 @@ export function SwipeDeck({ outfits, onSaveChange }: SwipeDeckProps) {
               outfit={outfit}
               index={i}
               onSaveChange={onSaveChange}
-              showSwap
+             
             />
           ))}
         </div>

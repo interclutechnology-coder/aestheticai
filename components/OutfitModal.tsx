@@ -19,6 +19,7 @@ interface OutfitModalProps {
   onClose: () => void;
   onSaveChange?: () => void;
   tryOnUrl?: string | null;
+  outfitImageUrl?: string | null;
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -202,7 +203,7 @@ function FlatLayView({ outfit }: { outfit: Outfit }) {
   );
 }
 
-export function OutfitModal({ outfit, open, onClose, onSaveChange, tryOnUrl }: OutfitModalProps) {
+export function OutfitModal({ outfit, open, onClose, onSaveChange, tryOnUrl, outfitImageUrl }: OutfitModalProps) {
   const [storeLocatorOpen, setStoreLocatorOpen] = useState(false);
 
   const itemEntries = (
@@ -235,7 +236,7 @@ export function OutfitModal({ outfit, open, onClose, onSaveChange, tryOnUrl }: O
               </Dialog.Close>
             </div>
 
-            {/* Try-on result OR fashion flat-lay */}
+            {/* Try-on result → AI outfit image → component flat-lay fallback */}
             {tryOnUrl ? (
               <div className="bg-mystyle-cream/50 px-5 py-4">
                 <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-mystyle-muted">
@@ -249,6 +250,21 @@ export function OutfitModal({ outfit, open, onClose, onSaveChange, tryOnUrl }: O
                 />
                 <p className="mt-2 text-[10px] italic text-mystyle-muted/60">
                   ✦ AI-generated try-on — results are approximate
+                </p>
+              </div>
+            ) : outfitImageUrl ? (
+              <div className="bg-mystyle-cream/50 px-5 py-4">
+                <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-mystyle-muted">
+                  AI-Generated Look
+                </p>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={outfitImageUrl}
+                  alt={outfit.title}
+                  className="w-full max-h-72 object-contain rounded-xl shadow-sm"
+                />
+                <p className="mt-2 text-[10px] italic text-mystyle-muted/60">
+                  ✦ AI-styled flat-lay — upload your photo on the home page to see yourself in this outfit
                 </p>
               </div>
             ) : (
