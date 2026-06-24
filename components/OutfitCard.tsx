@@ -38,7 +38,7 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
     if (requestedRef.current) return;
     requestedRef.current = true;
 
-    const delay = index * 4000; // 4 s between each card
+    const delay = index * 1500; // 1.5 s stagger — rate limit lifted with $10+ Replicate credit
     const timer = setTimeout(() => {
     fetch("/api/generate-outfit-image", {
       method: "POST",

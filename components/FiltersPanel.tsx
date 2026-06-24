@@ -65,9 +65,10 @@ export function FiltersPanel({ filters, onChange, className }: FiltersPanelProps
           min={0}
           max={1000}
           step={25}
+          minStepsBetweenThumbs={2}
           value={[filters.budgetMin, filters.budgetMax]}
           onValueChange={([min, max]) =>
-            onChange({ ...filters, budgetMin: min, budgetMax: max })
+            onChange({ ...filters, budgetMin: min, budgetMax: Math.max(max, min + 50) })
           }
         >
           <Slider.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-mystyle-stone">

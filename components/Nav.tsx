@@ -60,13 +60,7 @@ export function Nav() {
           ))}
         </div>
 
-        {/* Demo Mode badge */}
-        <div className="flex items-center gap-2">
-          <span className="hidden items-center gap-1 rounded-full border border-mystyle-warm/40 bg-mystyle-warm/10 px-2.5 py-0.5 text-xs font-medium text-mystyle-accent sm:flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-mystyle-accent animate-pulse" />
-            Demo Mode
-          </span>
-        </div>
+        <div className="w-20" />
       </nav>
     </header>
   );

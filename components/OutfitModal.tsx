@@ -6,7 +6,7 @@ import { X, Heart, ExternalLink, MapPin, RefreshCw, ChevronDown } from "lucide-r
 import { toast } from "sonner";
 import type { Outfit, Product } from "@/types";
 import { formatPrice } from "@/lib/utils";
-import { getRetailerSearchUrl } from "@/lib/retailerLinks";
+import { getBestProductUrl } from "@/lib/retailerLinks";
 import { saveItem, removeItem, isItemSaved } from "@/lib/storage";
 import { InventoryBadge } from "./InventoryBadge";
 import { ProductImage } from "./ProductImage";
@@ -115,15 +115,15 @@ function ItemRow({
             />
           </button>
 
-          {/* View at retailer */}
+          {/* View at retailer — uses direct product URL if Tavily found one */}
           <a
-            href={getRetailerSearchUrl(product.retailer, product.name)}
+            href={getBestProductUrl(product.url, product.retailer, product.name)}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center gap-1 rounded-lg bg-mystyle-dark px-2.5 py-1 text-[11px] font-semibold text-white transition-all hover:bg-mystyle-charcoal"
           >
-            View <ExternalLink className="h-3 w-3" />
+            View item <ExternalLink className="h-3 w-3" />
           </a>
 
           {/* Swap item */}

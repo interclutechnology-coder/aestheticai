@@ -19,11 +19,11 @@ interface RawProduct {
 }
 
 const CATEGORY_QUERIES: Record<string, string> = {
-  top: "women's top shirt blouse",
-  bottom: "women's pants jeans skirt",
-  shoes: "women's shoes sneakers boots",
-  outerwear: "women's jacket coat blazer",
-  accessory: "women's bag purse sunglasses jewelry",
+  top: "top shirt blouse sweater",
+  bottom: "pants jeans skirt trousers",
+  shoes: "shoes sneakers boots heels",
+  outerwear: "jacket coat blazer",
+  accessory: "bag purse sunglasses necklace",
 };
 
 const FASHION_RETAILERS = [
@@ -46,10 +46,14 @@ function detectRetailer(url: string): string {
 async function searchCategory(
   styleQuery: string,
   category: string,
+  budgetMin: number,
   budgetMax: number
 ): Promise<RawProduct[]> {
   const catQuery = CATEGORY_QUERIES[category] || category;
-  const query = `${styleQuery} ${catQuery} under $${budgetMax}`;
+  const priceClause = budgetMin > 0
+    ? `$${budgetMin} to $${budgetMax}`
+    : `under $${budgetMax}`;
+  const query = `${styleQuery} fashion ${catQuery} ${priceClause} buy`;
 
   const res = await fetch("https://api.tavily.com/search", {
     method: "POST",
@@ -57,10 +61,10 @@ async function searchCategory(
     body: JSON.stringify({
       api_key: process.env.TAVILY_API_KEY,
       query,
-      search_depth: "basic",
-      include_images: true,
+      search_depth: "advanced",
+      include_images: false,
       include_answer: false,
-      max_results: 6,
+      max_results: 8,
       include_domains: FASHION_RETAILERS,
     }),
   });
@@ -71,14 +75,21 @@ async function searchCategory(
   return (data.results ?? []).map((r: { title?: string; url?: string; content?: string }) => {
     const priceMatch = (r.content ?? "").match(/\$[\d,]+(?:\.\d{2})?/);
     const rawPrice = priceMatch ? parseFloat(priceMatch[0].replace(/[$,]/g, "")) : null;
-    const price = rawPrice && rawPrice > 5 && rawPrice <= budgetMax ? rawPrice : Math.floor(budgetMax * 0.25 + Math.random() * budgetMax * 0.3);
+    const effectiveBudgetMin = budgetMin > 0 ? budgetMin : 0;
+    const fallbackPrice = Math.floor(
+      effectiveBudgetMin + Math.random() * Math.max(50, (budgetMax - effectiveBudgetMin) * 0.5)
+    );
+    const price =
+      rawPrice && rawPrice >= Math.max(5, effectiveBudgetMin) && rawPrice <= budgetMax
+        ? rawPrice
+        : fallbackPrice;
 
     return {
       name: r.title ?? `${category} item`,
       url: r.url ?? "",
       price: Math.round(price * 100) / 100,
       retailer: detectRetailer(r.url ?? ""),
-      imageUrl: "", // Tavily images are random web scrapes — use gradient fallback instead
+      imageUrl: "",
       category,
     } as RawProduct;
   });
@@ -93,13 +104,13 @@ async function generateWithGemini(
   const apiKey = process.env.GOOGLE_AI_API_KEY;
   if (!apiKey) throw new Error("GOOGLE_AI_API_KEY not set");
 
-  // Parallel Tavily searches for 3 core categories
+  // Parallel Tavily searches for all categories
   const [tops, bottoms, shoes, outerwear, accessories] = await Promise.all([
-    searchCategory(prompt, "top", filters.budgetMax),
-    searchCategory(prompt, "bottom", filters.budgetMax),
-    searchCategory(prompt, "shoes", filters.budgetMax),
-    searchCategory(prompt, "outerwear", filters.budgetMax),
-    searchCategory(prompt, "accessory", filters.budgetMax),
+    searchCategory(prompt, "top", filters.budgetMin, filters.budgetMax),
+    searchCategory(prompt, "bottom", filters.budgetMin, filters.budgetMax),
+    searchCategory(prompt, "shoes", filters.budgetMin, filters.budgetMax),
+    searchCategory(prompt, "outerwear", filters.budgetMin, filters.budgetMax),
+    searchCategory(prompt, "accessory", filters.budgetMin, filters.budgetMax),
   ]);
 
   const hasRealProducts = tops.length > 0 || bottoms.length > 0 || shoes.length > 0;
@@ -130,16 +141,20 @@ ACCESSORIES: ${JSON.stringify(accessories.slice(0, 3), null, 0)}
       ? `Preferred retailers: ${filters.retailers.join(", ")}.`
       : "Any fashion retailer is fine (Zara, H&M, Uniqlo, ASOS, Nike, Nordstrom, Anthropologie, Mango, etc.).";
 
-  const geminiPrompt = `You are an expert fashion stylist AI. Create 8 complete, stylish outfit combinations based on this request.
+  const budgetNote = filters.budgetMin > 0
+    ? `Each outfit total must be between $${filters.budgetMin} and $${filters.budgetMax}. Each individual item price must be at least $${Math.round(filters.budgetMin / 5)} and no more than $${Math.round(filters.budgetMax * 0.6)}.`
+    : `Each outfit total must be under $${filters.budgetMax}. Individual item prices should be realistic for each retailer.`;
+
+  const geminiPrompt = `You are an expert fashion stylist AI. Create 5 complete, stylish outfit combinations based on this request.
 
 USER REQUEST: "${prompt}"
-BUDGET: $${filters.budgetMin}–$${filters.budgetMax} total per outfit
+BUDGET: ${budgetNote}
 ${genderNote}
 ${retailerNote}
 
 ${productContext}
 
-Return ONLY a valid JSON array of 8 outfits. No markdown, no explanation, just the JSON.
+Return ONLY a valid JSON array of exactly 5 outfits. No markdown, no explanation, just the JSON array.
 
 Each outfit must follow this EXACT structure:
 {
@@ -152,12 +167,12 @@ Each outfit must follow this EXACT structure:
   "items": {
     "top": {
       "id": "top-1",
-      "name": "Product name",
+      "name": "Specific product name (e.g. Silk Slip Cami, Wool Turtleneck Sweater)",
       "category": "top",
       "retailer": "Zara",
       "price": 39.90,
-      "imageUrl": "https://...",
-      "url": "https://...",
+      "imageUrl": "",
+      "url": "EXACT URL from the search results above for this item — use the full URL exactly as shown",
       "color": "ivory",
       "colorFamily": "white",
       "styleTags": ["minimalist", "classic"],
@@ -177,13 +192,13 @@ Rules:
 - fit must be one of: slim, regular, oversized, relaxed, tailored, cropped, wide
 - seasonTags must be array of: spring, summer, fall, winter, all
 - gender must be one of: male, female, unisex
-- outerwear and accessory are optional (omit them if they don't fit the look or budget)
-- totalPrice must equal sum of all item prices and stay within budget
-- Make each of the 8 outfits distinctly different from each other
-- imageUrl: always use "" (empty string) — the app will display a styled color gradient instead
-- For url: use the real product page URL from the search results above when available, otherwise use the retailer's homepage URL
-- Make titles creative and on-trend (e.g. "Quiet Luxury Edit", "Off-Duty Coastal", "Sharp Monday")
-- trending: set to true for 2-3 of the outfits that feel most current/viral`;
+- outerwear and accessory are optional (omit if over budget or wrong vibe)
+- totalPrice must equal the sum of all item prices
+- Make each of the 5 outfits distinctly different
+- imageUrl: ALWAYS use "" (empty string) — never set imageUrl to any URL
+- url: copy the EXACT product page URL from the search results above. If no matching result, use the retailer's search URL for that item
+- Product names must be specific and descriptive (e.g. "Black Pinstripe Blazer", not just "blazer")
+- trending: set to true for 1-2 outfits that feel most current/viral`;
 
   const result = await model.generateContent(geminiPrompt);
   const text = result.response.text();
@@ -250,7 +265,7 @@ Rules:
       } as Outfit;
     });
 
-  if (outfits.length < 4) throw new Error(`Only got ${outfits.length} valid outfits from Gemini`);
+  if (outfits.length < 1) throw new Error(`Gemini returned no valid outfits`);
 
   return outfits;
 }
@@ -289,7 +304,7 @@ export async function POST(req: NextRequest) {
 
     // Fallback: local mock generator
     await new Promise((resolve) => setTimeout(resolve, 900 + Math.random() * 600));
-    const outfits = generateOutfits({ prompt, filters, count: 8 });
+    const outfits = generateOutfits({ prompt, filters, count: 5 });
 
     if (outfits.length === 0) {
       return NextResponse.json(
