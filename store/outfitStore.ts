@@ -16,6 +16,10 @@ interface OutfitStore {
   userPhotoUrl: string | null;
   setUserPhotoUrl: (url: string | null) => void;
 
+  // Generated image cache — keyed by outfitId, prevents re-calling Replicate on nav back
+  outfitImages: Record<string, { imageUrl: string | null; garmentImageUrl: string | null }>;
+  setOutfitImage: (outfitId: string, imageUrl: string | null, garmentImageUrl: string | null) => void;
+
   // Actions
   setPrompt: (prompt: string) => void;
   setFilters: (filters: Filters) => void;
@@ -54,8 +58,13 @@ export const useOutfitStore = create<OutfitStore>()(
       currentIndex: 0,
       isLoading: false,
       userPhotoUrl: null,
+      outfitImages: {},
 
       setUserPhotoUrl: (userPhotoUrl) => set({ userPhotoUrl }),
+      setOutfitImage: (outfitId, imageUrl, garmentImageUrl) =>
+        set((state) => ({
+          outfitImages: { ...state.outfitImages, [outfitId]: { imageUrl, garmentImageUrl } },
+        })),
       setPrompt: (prompt) => set({ prompt }),
       setFilters: (filters) => set({ filters }),
       setOutfits: (outfits) => set({ outfits, currentIndex: 0 }),
@@ -90,10 +99,10 @@ export const useOutfitStore = create<OutfitStore>()(
         })),
 
       clearGeneration: () =>
-        set({ outfits: [], currentIndex: 0, isLoading: false }),
+        set({ outfits: [], currentIndex: 0, isLoading: false, outfitImages: {} }),
     }),
     {
-      name: "mystyle-outfit-store-v2", // bumped to clear old cached outfit data with garbage imageUrls
+      name: "mystyle-outfit-store-v3", // v3: adds outfitImages cache for Replicate image deduplication
       skipHydration: true,
       partialize: (state) => ({
         prompt: state.prompt,
@@ -101,6 +110,7 @@ export const useOutfitStore = create<OutfitStore>()(
         outfits: state.outfits,
         currentIndex: state.currentIndex,
         userPhotoUrl: state.userPhotoUrl,
+        outfitImages: state.outfitImages, // persist so images survive page refresh
       }),
     }
   )

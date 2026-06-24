@@ -30,40 +30,52 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
   const [tryOnUrl, setTryOnUrl] = useState<string | null>(null);
   const [tryOnLoading, setTryOnLoading] = useState(false);
 
-  const { userPhotoUrl } = useOutfitStore();
+  const { userPhotoUrl, outfitImages, setOutfitImage } = useOutfitStore();
 
   // Step 1 — generate AI outfit photo + garment product shot
-  // Stagger by index so 8 cards don't all hit Replicate simultaneously
+  // Checks Zustand cache first so navigating away and back never re-calls Replicate
   useEffect(() => {
     if (requestedRef.current) return;
     requestedRef.current = true;
 
-    const delay = index * 1500; // 1.5 s stagger — rate limit lifted with $10+ Replicate credit
+    // Restore from cache (persisted in localStorage via Zustand)
+    const cached = outfitImages[outfit.outfitId];
+    if (cached !== undefined) {
+      if (cached.imageUrl) setOutfitImageUrl(cached.imageUrl);
+      else setImageFailed(true);
+      if (cached.garmentImageUrl) setGarmentImageUrl(cached.garmentImageUrl);
+      setImageLoading(false);
+      return;
+    }
+
+    // Not cached — stagger request by index to avoid Replicate burst limit
+    const delay = index * 3000; // 3 s between cards (safe for accounts near the $5 threshold)
     const timer = setTimeout(() => {
-    fetch("/api/generate-outfit-image", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        outfitId: outfit.outfitId,
-        items: outfit.items,
-        title: outfit.title,
-        reasoning: outfit.reasoning,
-      }),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.imageUrl) {
-          setOutfitImageUrl(data.imageUrl);
-        } else {
-          setImageFailed(true); // null = API error (billing, timeout, etc.)
-        }
-        if (data.garmentImageUrl) setGarmentImageUrl(data.garmentImageUrl);
+      fetch("/api/generate-outfit-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          outfitId: outfit.outfitId,
+          items: outfit.items,
+          title: outfit.title,
+          reasoning: outfit.reasoning,
+        }),
       })
-      .catch((err) => {
-        console.error("[OutfitCard] image gen failed:", err);
-        setImageFailed(true);
-      })
-      .finally(() => setImageLoading(false));
+        .then((r) => r.json())
+        .then((data) => {
+          const img = data.imageUrl ?? null;
+          const garment = data.garmentImageUrl ?? null;
+          setOutfitImage(outfit.outfitId, img, garment); // save to store
+          if (img) setOutfitImageUrl(img);
+          else setImageFailed(true);
+          if (garment) setGarmentImageUrl(garment);
+        })
+        .catch((err) => {
+          console.error("[OutfitCard] image gen failed:", err);
+          setOutfitImage(outfit.outfitId, null, null);
+          setImageFailed(true);
+        })
+        .finally(() => setImageLoading(false));
     }, delay);
 
     return () => clearTimeout(timer);

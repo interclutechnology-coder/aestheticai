@@ -152,8 +152,23 @@ Rules:
 - trending: true for 1-2 outfits
 - Each outfit must be clearly different from the others`;
 
-  const result = await model.generateContent(geminiPrompt);
-  const text = result.response.text();
+  // Retry on Gemini 429 (per-minute rate limit on free tier)
+  let text = "";
+  for (let attempt = 0; attempt <= 3; attempt++) {
+    try {
+      const result = await model.generateContent(geminiPrompt);
+      text = result.response.text();
+      break;
+    } catch (err: unknown) {
+      const msg = String((err as Error)?.message ?? "");
+      const is429 = msg.includes("429") || msg.includes("Too Many Requests");
+      if (!is429 || attempt === 3) throw err;
+      const retryMatch = msg.match(/retry in ([\d.]+)s/);
+      const waitMs = retryMatch ? Math.min(parseFloat(retryMatch[1]) * 1000 + 500, 20000) : 8000;
+      console.log(`[generate] Gemini rate limited, waiting ${waitMs}ms (attempt ${attempt + 1})`);
+      await new Promise((r) => setTimeout(r, waitMs));
+    }
+  }
 
   const jsonMatch = text.match(/\[[\s\S]*\]/);
   if (!jsonMatch) throw new Error("Gemini returned no JSON");
