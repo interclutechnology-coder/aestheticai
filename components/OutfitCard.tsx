@@ -23,6 +23,7 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
   const [outfitImageUrl, setOutfitImageUrl] = useState<string | null>(null);
   const [garmentImageUrl, setGarmentImageUrl] = useState<string | null>(null);
   const [imageLoading, setImageLoading] = useState(true);
+  const [imageFailed, setImageFailed] = useState(false);
   const requestedRef = useRef(false);
 
   // Virtual try-on
@@ -48,10 +49,17 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
     })
       .then((r) => r.json())
       .then((data) => {
-        if (data.imageUrl) setOutfitImageUrl(data.imageUrl);
+        if (data.imageUrl) {
+          setOutfitImageUrl(data.imageUrl);
+        } else {
+          setImageFailed(true); // null = API error (billing, timeout, etc.)
+        }
         if (data.garmentImageUrl) setGarmentImageUrl(data.garmentImageUrl);
       })
-      .catch((err) => console.error("[OutfitCard] image gen failed:", err))
+      .catch((err) => {
+        console.error("[OutfitCard] image gen failed:", err);
+        setImageFailed(true);
+      })
       .finally(() => setImageLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [outfit.outfitId]);
@@ -137,8 +145,19 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
               alt={tryOnUrl ? `You wearing ${outfit.title}` : outfit.title}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
+          ) : imageFailed ? (
+            // Generation failed (billing, timeout, etc.) — show styled gradient fallback
+            <div className="h-full w-full flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-mystyle-cream via-mystyle-stone/20 to-mystyle-accent/10 px-4">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-mystyle-accent/10 border border-mystyle-accent/20">
+                <Sparkles className="h-8 w-8 text-mystyle-accent/60" />
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-semibold text-mystyle-dark line-clamp-2">{outfit.title}</p>
+                <p className="text-[10px] text-mystyle-muted mt-1">Tap to view outfit details</p>
+              </div>
+            </div>
           ) : (
-            // Loading state — NO tiles/panels, just spinner
+            // Still loading — spinner
             <div className="h-full w-full flex flex-col items-center justify-center gap-3">
               <div className="relative">
                 <div className="h-14 w-14 rounded-full border-2 border-mystyle-stone/30 bg-mystyle-stone/10" />
