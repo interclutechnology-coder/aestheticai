@@ -1,27 +1,14 @@
 /**
  * Returns the best URL to send the user to for a product.
- * Priority: direct product URL from Tavily → retailer search → Google Shopping.
+ * The generate route now stores real product page URLs (or Google Shopping
+ * fallback) in product.url — so we just return it directly when set.
  */
 export function getBestProductUrl(
   productUrl: string | undefined,
   retailer: string,
   productName: string
 ): string {
-  // Use the direct product URL if it looks like a real product page (has a meaningful path)
-  if (productUrl && productUrl.startsWith("http")) {
-    try {
-      const parsed = new URL(productUrl);
-      const path = parsed.pathname;
-      // Accept if path is deeper than just "/" or "/en/" etc.
-      if (path.length > 4 && !path.match(/^\/?(en\/|us\/en\/|search|category|collection)?\s*$/i)) {
-        return productUrl;
-      }
-    } catch {
-      // ignore invalid URLs
-    }
-  }
-
-  // Fall back to retailer search page
+  if (productUrl && productUrl.startsWith("http")) return productUrl;
   return getRetailerSearchUrl(retailer, productName);
 }
 
