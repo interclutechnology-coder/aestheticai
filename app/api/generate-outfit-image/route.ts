@@ -12,16 +12,13 @@ function getUrl(output: unknown): string | null {
   const item = Array.isArray(output) ? output[0] : output;
   if (!item) return null;
 
-  // Plain string (older SDK versions)
   if (typeof item === "string") return item.startsWith("http") ? item : null;
 
-  // FileOutput from replicate >=0.25 — has .url() returning a URL object
   if (typeof item === "object" && item !== null) {
     const obj = item as Record<string, unknown>;
     if (typeof obj.url === "function") {
       try {
         const urlResult = (obj.url as () => unknown)();
-        // URL object → need .href
         if (urlResult && typeof urlResult === "object" && "href" in urlResult) {
           return String((urlResult as { href: string }).href);
         }
@@ -29,10 +26,33 @@ function getUrl(output: unknown): string | null {
         return s.startsWith("http") ? s : null;
       } catch { /* fall through */ }
     }
-    // Some versions expose .href directly
     if (typeof obj.href === "string") return obj.href;
   }
   return null;
+}
+
+// Retry Replicate calls on 429 rate-limit errors (strict throttle on accounts < $5 credit)
+async function runWithRetry(
+  model: `${string}/${string}` | `${string}/${string}:${string}`,
+  input: Record<string, unknown>,
+  maxRetries = 4
+): Promise<unknown> {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await replicate.run(model, { input });
+    } catch (err: unknown) {
+      const msg = String((err as Error)?.message ?? "");
+      const is429 = msg.includes("429") || msg.includes("Too Many Requests");
+      if (!is429 || attempt === maxRetries) throw err;
+
+      // Replicate embeds retry_after seconds in the error JSON
+      const match = msg.match(/"retry_after"\s*:\s*(\d+)/);
+      const waitMs = match ? (parseInt(match[1]) + 1) * 1000 : 12000;
+      console.log(`[generate-outfit-image] Rate limited, waiting ${waitMs}ms (attempt ${attempt + 1}/${maxRetries})`);
+      await new Promise((r) => setTimeout(r, waitMs));
+    }
+  }
+  throw new Error("Max retries exceeded");
 }
 
 export async function POST(req: NextRequest) {
@@ -43,9 +63,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ imageUrl: null, garmentImageUrl: null }, { status: 500 });
     }
 
-    const top      = items?.top;
-    const bottom   = items?.bottom;
-    const shoes    = items?.shoes;
+    const top       = items?.top;
+    const bottom    = items?.bottom;
+    const shoes     = items?.shoes;
     const outerwear = items?.outerwear;
     const accessory = items?.accessory;
 
@@ -66,7 +86,6 @@ export async function POST(req: NextRequest) {
       .filter(Boolean)
       .join(", ");
 
-    // Image 1: full-body model wearing the complete outfit
     const outfitPrompt =
       `Professional high-fashion editorial photograph. ` +
       `Stylish ${genderWord} model wearing ${outfitDesc}. ` +
@@ -74,7 +93,6 @@ export async function POST(req: NextRequest) {
       `Full body shot from head to toe, clean white studio background, ` +
       `sharp focus, Vogue magazine quality, photorealistic, 4k.`;
 
-    // Image 2: clean product shot of just the top (for IDM-VTON virtual try-on)
     const garmentPrompt =
       `Commercial fashion product photo. ` +
       `${top.name}${top.color ? ` in ${top.color}` : ""}, ` +
@@ -83,28 +101,24 @@ export async function POST(req: NextRequest) {
 
     console.log(`[generate-outfit-image] Starting for "${title}" (${outfitId})`);
 
-    const [outfitRaw, garmentRaw] = await Promise.all([
-      replicate.run("black-forest-labs/flux-schnell", {
-        input: {
-          prompt: outfitPrompt,
-          aspect_ratio: "2:3",
-          output_format: "webp",
-          output_quality: 90,
-          num_outputs: 1,
-        },
-      }),
-      replicate.run("black-forest-labs/flux-schnell", {
-        input: {
-          prompt: garmentPrompt,
-          aspect_ratio: "1:1",
-          output_format: "webp",
-          output_quality: 85,
-          num_outputs: 1,
-        },
-      }),
-    ]);
+    // Run sequentially (not Promise.all) to avoid burst rate-limit on low-credit accounts
+    const outfitRaw   = await runWithRetry("black-forest-labs/flux-schnell", {
+      prompt: outfitPrompt,
+      aspect_ratio: "2:3",
+      output_format: "webp",
+      output_quality: 90,
+      num_outputs: 1,
+    });
 
-    const imageUrl     = getUrl(outfitRaw);
+    const garmentRaw  = await runWithRetry("black-forest-labs/flux-schnell", {
+      prompt: garmentPrompt,
+      aspect_ratio: "1:1",
+      output_format: "webp",
+      output_quality: 85,
+      num_outputs: 1,
+    });
+
+    const imageUrl        = getUrl(outfitRaw);
     const garmentImageUrl = getUrl(garmentRaw);
 
     console.log(

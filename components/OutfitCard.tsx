@@ -33,10 +33,13 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
   const { userPhotoUrl } = useOutfitStore();
 
   // Step 1 — generate AI outfit photo + garment product shot
+  // Stagger by index so 8 cards don't all hit Replicate simultaneously
   useEffect(() => {
     if (requestedRef.current) return;
     requestedRef.current = true;
 
+    const delay = index * 4000; // 4 s between each card
+    const timer = setTimeout(() => {
     fetch("/api/generate-outfit-image", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,8 +64,11 @@ export function OutfitCard({ outfit, index = 0, onSaveChange }: OutfitCardProps)
         setImageFailed(true);
       })
       .finally(() => setImageLoading(false));
+    }, delay);
+
+    return () => clearTimeout(timer);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [outfit.outfitId]);
+  }, [outfit.outfitId, index]);
 
   // Step 2 — virtual try-on once we have both user photo + garment image
   useEffect(() => {
